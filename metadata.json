@@ -1,0 +1,6 @@
+{
+  "name": "Centro de Salud Tipo C Rioverde",
+  "description": "Página web moderna e institucional para el Centro de Salud Tipo C Rioverde, diseñada para transmitir confianza, salud y bienestar con acceso a servicios, descargas y contacto.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
