@@ -52,7 +52,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-sm sm:text-base text-gray-700 leading-relaxed max-w-lg"
           >
-            El Centro de Salud Tipo C Rioverde ofrece atención médica pública gratuita con altos estándares de calidad, modernos consultorios, laboratorio automatizado y un selecto grupo de especialistas listos para salvaguardar tu bienestar y el de toda tu familia.
+            El Centro de Salud Tipo C Rioverde ofrece atención médica pública gratuita con altos estándares de calidad, modernos consultorios, laboratorio automatizado y un selecto grupo de profesionales listos para salvaguardar tu bienestar y el de toda tu familia.
           </motion.p>
           
         </div>
