@@ -31,7 +31,7 @@ export default function Ubicacion() {
                 Ubicación
               </h3>
               <p className="text-[11px] text-emerald-200/85 max-w-xl leading-relaxed">
-                Visítenos en nuestras instalaciones centrales en Rioverde o contáctese de manera directa con nuestra área de atención ciudadana y canales oficiales MSP.
+                Visítenos en nuestras instalaciones en Rioverde o contáctese de manera directa con nuestra área de atención ciudadana y canales oficiales MSP.
               </p>
             </div>
 

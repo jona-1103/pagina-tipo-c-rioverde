@@ -23,7 +23,6 @@ import ServiciosPage from './components/ServiciosPage';
 import AcercaPage from './components/AcercaPage';
 import DescargasPage from './components/DescargasPage';
 import ContactoPage from './components/ContactoPage';
-import HealthAnnouncementPopup from './components/HealthAnnouncementPopup';
 import SecureClinicalPortal from './components/SecureClinicalPortal';
 
 export default function App() {
@@ -41,8 +40,7 @@ export default function App() {
   const [preselectedSpecialty, setPreselectedSpecialty] = useState<string | undefined>(undefined);
 
   const handleOpenAppointment = (specialtyId?: string) => {
-    setPreselectedSpecialty(specialtyId);
-    setIsAppointmentOpen(true);
+    window.open('https://api.whatsapp.com/send/?phone=593961171171&text=Hola&app_absent=0', '_blank', 'noreferrer,noopener');
   };
 
   const handleCloseAppointment = () => {
@@ -185,8 +183,6 @@ export default function App() {
         onClose={() => setIsDownloadsOpen(false)}
         initialTab={downloadsTab}
       />
-
-      {currentPage === 'inicio' && <HealthAnnouncementPopup />}
 
     </div>
   );

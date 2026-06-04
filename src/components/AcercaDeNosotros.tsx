@@ -20,13 +20,13 @@ export default function AcercaDeNosotros({ onNavigateToAbout }: AcercaProps) {
     },
     {
       title: 'Visión de Excelencia',
-      description: 'Ser reconocidos a nivel provincial como el centro de salud Tipo C modelo del Ministerio de Salud Pública de Ecuador, destacando por nuestra tecnología de diagnóstico, calidez del personal y prevención epidemiológica.',
+      description: 'Ser reconocidos a nivel provincial como el centro de salud Tipo C modelo del Ministerio de Salud Pública de Ecuador, destacando nuestras atenciones, calidez del personal y prevención epidemiológica.',
       icon: Eye,
       bgColor: 'bg-blue-50 text-blue-700 border-blue-100',
     },
     {
       title: 'Valores y Calidez',
-      description: 'Basamos nuestro actuar clínico en la ética profesional, empatía comunitaria, vocación de servicio, transparencia administrativa y un profundo respeto a las cosmovisiones interculturales de nuestros pacientes.',
+      description: 'Basamos nuestro actuar en la ética profesional, empatía comunitaria, vocación de servicio, transparencia administrativa y un profundo respeto a las cosmovisiones interculturales de nuestros pacientes.',
       icon: HeartHandshake,
       bgColor: 'bg-teal-50 text-teal-700 border-teal-100',
     }
@@ -50,7 +50,7 @@ export default function AcercaDeNosotros({ onNavigateToAbout }: AcercaProps) {
               NUESTRA IDENTIDAD
             </span>
             <h3 className="font-sans font-black text-3xl text-emerald-950 tracking-tight leading-none">
-              Comprometidos con el desarrollo integral y el buen vivir de la zona norte
+              Comprometidos con el desarrollo integral y el buen vivir del cantón Rioverde
             </h3>
             <div className="w-12 h-1 bg-emerald-500 rounded"></div>
             <div className="space-y-4 text-xs text-gray-500 leading-relaxed">
@@ -58,7 +58,7 @@ export default function AcercaDeNosotros({ onNavigateToAbout }: AcercaProps) {
                 El Centro de Salud Tipo C Rioverde fue concebido en el marco de la planificación nacional de salud de Ecuador, con el firme propósito de descongestionar los hospitales distritales brindando servicios especializados y respuesta a emergencias médicas inmediatas a nivel cantonal.
               </p>
               <p>
-                Nuestro contingente incluye un laboratorio totalmente automatizado que opera de forma continua, farmacia de acceso público de recetas gratuitas expedidas por el MSP, y un dispensario consultivo de ginecología, obstetricia, pediatría, odontología y salud mental familiar.
+                Nuestro contingente incluye Consulta Externa, Emergencia, Laboratorio, Rayos X, Farmacia, Ginecología, Obstetricia, Odontología, Salud Mental, Medicina Familiar, entre otras atenciones para la atención del ciudadano.
               </p>
             </div>
             {/* Short highlight quote */}

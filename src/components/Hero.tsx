@@ -50,7 +50,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-sm sm:text-base text-gray-800 font-medium leading-relaxed max-w-lg drop-shadow-sm bg-white/20 backdrop-blur-[1px] p-2 rounded-xl border border-white/10"
+            className="text-sm sm:text-base text-gray-800 font-medium leading-relaxed max-w-lg"
           >
             Brindamos atención médica integral, accesible y de calidad a toda la comunidad. Conoce nuestros servicios, accede a tus resultados y encuentra cómo llegar hasta nosotros.
           </motion.p>
