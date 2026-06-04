@@ -24,10 +24,10 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
           className="w-full h-full object-cover object-right"
           referrerPolicy="no-referrer"
         />
-        {/* White translucent overlay from left to center for readability - fades out quickly to reveal the building on the center-right */}
-        <div className="absolute inset-x-0 inset-y-0 bg-gradient-to-r from-white/95 via-white/85 via-35% md:via-45% to-white/0"></div>
+        {/* Softened white translucent overlay for better visibility of the background image and high text legibility */}
+        <div className="absolute inset-x-0 inset-y-0 bg-gradient-to-r from-white/80 via-white/40 via-30% md:via-40% to-white/0"></div>
         {/* Extra height-based fade for mobile layouts at bottom */}
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white to-transparent lg:hidden"></div>
+        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white to-transparent lg:hidden"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
@@ -38,11 +38,11 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-sans font-black text-3xl sm:text-4xl lg:text-5xl text-emerald-950 tracking-tight leading-none"
+            className="font-sans font-black text-3xl sm:text-4xl lg:text-5xl text-emerald-950 tracking-tight leading-tight"
             id="hero-main-title"
           >
-            Cuidamos tu salud, <br className="hidden sm:inline" />
-            <span className="text-emerald-600">sin importar de dónde vengas</span>
+            Tu salud, <br className="hidden sm:inline" />
+            <span className="text-emerald-700">nuestra misión diaria</span>
           </motion.h2>
 
           {/* Description */}
@@ -50,9 +50,9 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-sm sm:text-base text-gray-700 leading-relaxed max-w-lg"
+            className="text-sm sm:text-base text-gray-800 font-medium leading-relaxed max-w-lg drop-shadow-sm bg-white/20 backdrop-blur-[1px] p-2 rounded-xl border border-white/10"
           >
-            El Centro de Salud Tipo C Rioverde ofrece atención médica pública gratuita con altos estándares de calidad, modernos consultorios, laboratorio automatizado y un selecto grupo de profesionales listos para salvaguardar tu bienestar y el de toda tu familia.
+            Brindamos atención médica integral, accesible y de calidad a toda la comunidad. Conoce nuestros servicios, accede a tus resultados y encuentra cómo llegar hasta nosotros.
           </motion.p>
           
         </div>
