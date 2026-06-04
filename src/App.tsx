@@ -24,8 +24,16 @@ import AcercaPage from './components/AcercaPage';
 import DescargasPage from './components/DescargasPage';
 import ContactoPage from './components/ContactoPage';
 import HealthAnnouncementPopup from './components/HealthAnnouncementPopup';
+import SecureClinicalPortal from './components/SecureClinicalPortal';
 
 export default function App() {
+  // Enforce secure rendering when initiated from parent click
+  const isClinicalPortalView = typeof window !== 'undefined' && window.location.search.includes('clinical_portal=true');
+
+  if (isClinicalPortalView) {
+    return <SecureClinicalPortal />;
+  }
+
   const [currentPage, setCurrentPage] = useState<'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto'>('inicio');
   const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
   const [isDownloadsOpen, setIsDownloadsOpen] = useState(false);
