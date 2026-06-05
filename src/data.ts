@@ -75,7 +75,7 @@ export const servicesList: MedicalService[] = [
   {
     id: 'diagnostico-apoyo',
     title: 'Diagnóstico y Apoyo Terapéutico',
-    description: 'Aparatos tecnológicos y laboratorios para corroborar diagnósticos precisos de forma rápida.',
+    description: 'Laboratorio con equipos tecnológicos para los diagnósticos precisos de forma rápida.',
     iconName: 'FlaskConical',
     details: [
       'Laboratorio Clínico Automatizado (Hemograma, Bioquímica, Hormonales)',
