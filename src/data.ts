@@ -4,7 +4,7 @@
  */
 
 import { MedicalService, Benefit, Statistic, BlogItem, MSPManual, DownloadableDocument } from './types';
-import doctorResultsImg from './assets/images/doctor_results_1779982037171.png';
+import doctorResultsImg from './assets/images/lab_results_rioverde_1780685509630.png';
 
 // Let's resolve the actual generated asset paths in code imports inside components, or define them here.
 export const HERO_IMAGE = 'https://lh3.googleusercontent.com/d/1l1mScAlU1cV6nLYjQen-98nSaCL8UvkQ';
@@ -142,14 +142,14 @@ export const blogList: BlogItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80'
   },
   {
-    id: 'nutricion-infantil',
-    title: 'Combatiendo la desnutrición infantil: Consejos de pediatría',
-    description: 'Iniciativas de nuestro departamento de Nutrición para asegurar un crecimiento sano en el primer año de vida.',
-    content: 'La nutrición adecuada durante los primeros 1,000 días de vida es decisiva para el desarrollo cerebral y corporal de los niños. En Rioverde, implementamos el programa "Infancia con Futuro", una iniciativa que acompaña a madres gestantes y niños de hasta 2 años con suplementación de hierro, control de talla y peso mensual, y asesoría alimentaria.\n\nNuestros especialistas aconsejan promover la lactancia materna exclusiva hasta los 6 meses de edad y posteriormente iniciar la alimentación complementaria rica en proteínas de alto valor biológico y vegetales de hoja verde, evitando azúcares añadidos o alimentos ultraprocesados.',
+    id: 'control-prenatal',
+    title: 'Control Prenatal: Cuidado e importancia durante el embarazo',
+    description: 'El área de Ginecología y Obstetricia de nuestro centro resalta la importancia de valoraciones oportunas para la salud materna.',
+    content: 'El control prenatal sistemático y continuo es de suma importancia para prevenir complicaciones y evaluar el correcto desarrollo del bebé. En el Centro de Salud Tipo C Rioverde, contamos con profesionales de primer nivel en gineco-obstetricia que asisten a la gestante en cada fase de su embarazo.\n\nNuestras obstetras aconsejan asistir a un mínimo de cinco controles prenatales estructurados, efectuarse ecografías de rutina y recibir suplementos de hierro y ácido fólico de manera gratuita en la farmacia del centro.',
     date: '15 Mayo 2026',
-    category: 'Pediatría',
+    category: 'Ginecología',
     readTime: '5 min read',
-    imageUrl: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 'control-salud-cardio',
@@ -267,7 +267,6 @@ export const downloadableDocumentsList: DownloadableDocument[] = [
 // List of available specialties
 export const specialtiesList = [
   { id: 'general', name: 'Medicina General y Familiar' },
-  { id: 'pediatria', name: 'Pediatría / Niño Sano' },
   { id: 'ginecologia', name: 'Ginecología y Obstetricia' },
   { id: 'odontologia', name: 'Odontología' },
   { id: 'psicologia', name: 'Psicología Clínica' },

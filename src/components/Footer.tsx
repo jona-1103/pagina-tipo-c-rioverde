@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { HeartPulse, Facebook, Twitter, Mail, Phone, ExternalLink } from 'lucide-react';
+import { HeartPulse, Facebook, X, Instagram, Phone, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => void;
@@ -48,29 +48,31 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
             {/* Minimalist social icons */}
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/profile.php?id=61574518769108&locale=es_LA"
                 target="_blank"
                 rel="noreferrer"
                 className="p-1.5 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 transition-colors text-emerald-300 hover:text-white"
-                title="Siga al MSP en Facebook"
+                title="Siga al CS Rioverde en Facebook"
               >
                 <Facebook className="w-4 h-4" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/DPSEsmeraldas"
                 target="_blank"
                 rel="noreferrer"
                 className="p-1.5 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 transition-colors text-emerald-300 hover:text-white"
-                title="Siga al MSP en Twitter/X"
+                title="Siga al CS Rioverde en X"
               >
-                <Twitter className="w-4 h-4" />
+                <X className="w-4 h-4" />
               </a>
               <a
-                href="mailto:oficina.tecnica.08ot06@08d01.saludzona1.gob.ec,correogeneralcstcr@gmail.com"
+                href="https://www.instagram.com/saludesmeraldas/"
+                target="_blank"
+                rel="noreferrer"
                 className="p-1.5 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 transition-colors text-emerald-300 hover:text-white"
-                title="Envíenos un Correo Electrónico"
+                title="Siga al CS Rioverde en Instagram"
               >
-                <Mail className="w-4 h-4" />
+                <Instagram className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -184,7 +186,7 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
       <div className="bg-emerald-990 border-t border-emerald-900 text-emerald-300/60 py-6 text-center text-[10px] uppercase tracking-wider font-mono bg-emerald-950/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-emerald-300/60">
           <span>
-            © {currentYear} Centro de Salud Tipo C Rioverde. Ministerio de Salud Pública de la República del Ecuador.
+            © {currentYear} Centro de Salud Tipo C Rioverde. Tics Ing. Jonathn Poso Ortiz.
           </span>
         </div>
       </div>

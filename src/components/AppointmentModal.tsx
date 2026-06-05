@@ -34,7 +34,6 @@ export default function AppointmentModal({ isOpen, onClose, initialSpecialtyId }
 
   const doctorsBySpecialty: Record<string, string> = {
     general: 'Dr. Fernando Quintero (Medicina Familiar)',
-    pediatria: 'Dra. Mercedes Ortiz (Pediatra)',
     ginecologia: 'Dra. Elena Caicedo (Obstetra - Ginecóloga)',
     odontologia: 'Dr. Mateo Rosero (Odontólogo)',
     psicologia: 'Psic. Viviana Estupiñán (Psicóloga Clínica)',
