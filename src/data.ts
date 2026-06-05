@@ -4,10 +4,11 @@
  */
 
 import { MedicalService, Benefit, Statistic, BlogItem, MSPManual, DownloadableDocument } from './types';
+import doctorResultsImg from './assets/images/doctor_results_1779982037171.png';
 
 // Let's resolve the actual generated asset paths in code imports inside components, or define them here.
 export const HERO_IMAGE = 'https://lh3.googleusercontent.com/d/1l1mScAlU1cV6nLYjQen-98nSaCL8UvkQ';
-export const DOCTOR_RESULTS_IMAGE = '/src/assets/images/doctor_results_1779982037171.png';
+export const DOCTOR_RESULTS_IMAGE = doctorResultsImg;
 
 export const benefitsList: Benefit[] = [
   {
