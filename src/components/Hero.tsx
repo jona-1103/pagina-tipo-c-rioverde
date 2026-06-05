@@ -14,14 +14,14 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
   return (
     <section
       id="banner-hero"
-      className="relative w-full max-w-[1960px] mx-auto h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600px] flex items-center overflow-hidden bg-white mt-[60px] md:mt-0"
+      className="relative w-full max-w-[1960px] mx-auto h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600px] flex items-start overflow-hidden bg-white mt-[60px] md:mt-0"
     >
       {/* Background Image of the Modern Health Center */}
       <div className="absolute inset-0 w-full h-full">
         <img
           src={HERO_IMAGE}
           alt="Centro de Salud Tipo C Rioverde"
-          className="w-full h-full object-cover object-right"
+          className="w-full h-full object-cover object-[right_20%]"
           referrerPolicy="no-referrer"
         />
         {/* Softened white translucent overlay for better visibility of the background image and high text legibility */}
@@ -31,7 +31,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="max-w-md md:max-w-xl lg:max-w-2xl space-y-4 text-left p-2 pt-12 sm:pt-16 md:pt-24">
+        <div className="max-w-md md:max-w-xl lg:max-w-2xl space-y-4 text-left p-2 pt-24 sm:pt-32 md:pt-44 lg:pt-56">
           
           {/* Slogan */}
           <motion.h2
