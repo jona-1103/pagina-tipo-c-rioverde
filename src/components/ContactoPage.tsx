@@ -98,7 +98,7 @@ export default function ContactoPage() {
           </h2>
           <div className="w-16 h-1 w-24 bg-emerald-600 mx-auto rounded-full"></div>
           <p className="text-sm text-gray-500 leading-relaxed pt-2">
-            ¿Tiene alguna consulta sobre agendamientos, disponibilidad de vacunas, reactivo de laboratorio o sugerencias? Háganos llegar su mensaje, su opinión nos interesa y nos ayudara a mejor nuestro servicio.
+            ¿Tienes alguna consulta o dudas? Háganos llegar su mensaje, su opinión nos interesa y nos ayudara a mejor nuestro servicio.
           </p>
         </div>
 
