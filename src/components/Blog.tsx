@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, Heart, Share2, Eye, X, Newspaper, ChevronRight } from 'lucide-react';
+import { Heart, Share2, X, Newspaper, ChevronRight } from 'lucide-react';
 import { blogList } from '../data';
 import { BlogItem } from '../types';
 
@@ -66,12 +66,6 @@ export default function Blog() {
 
                 {/* Post detail contents */}
                 <div className="p-4 space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-gray-400 font-mono text-[10px]">
-                    <Calendar className="w-3 h-3" />
-                    <span>{post.date}</span>
-                    <span>•</span>
-                    <span>{post.readTime}</span>
-                  </div>
                   <h4 className="font-sans font-bold text-sm text-emerald-950 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
                     {post.title}
                   </h4>
@@ -144,12 +138,6 @@ export default function Blog() {
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-gray-400 font-mono text-xs">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>Publicado el: {selectedPost.date}</span>
-                    <span>•</span>
-                    <span>Lectura: {selectedPost.readTime}</span>
-                  </div>
                   <h3 className="font-sans font-extrabold text-xl sm:text-2xl text-emerald-950 tracking-tight leading-snug">
                     {selectedPost.title}
                   </h3>

@@ -31,7 +31,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="max-w-md md:max-w-xl lg:max-w-2xl space-y-4 text-left p-2 pt-24 sm:pt-32 md:pt-44 lg:pt-56">
+        <div className="max-w-md md:max-w-xl lg:max-w-2xl space-y-4 text-left p-2 pt-28 sm:pt-40 md:pt-52 lg:pt-64">
           
           {/* Slogan */}
           <motion.h2
