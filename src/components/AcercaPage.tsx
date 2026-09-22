@@ -5,10 +5,12 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { HERO_IMAGE } from '../data';
+import { useBannerImage } from '../utils/bannerImage';
 import { HeartPulse, ShieldCheck, Award, Eye, Compass, Target, Sparkles, Building2, BookOpen, Users } from 'lucide-react';
 
 export default function AcercaPage() {
+  const [heroImage] = useBannerImage();
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
@@ -23,9 +25,9 @@ export default function AcercaPage() {
         {/* Majestic main banner block */}
         <div className="relative rounded-3xl h-[280px] sm:h-[400px] overflow-hidden mb-12 shadow-md">
           <img 
-            src={HERO_IMAGE} 
-            alt="Centro de Salud Tipo C Rioverde Banner Principal" 
-            className="w-full h-full object-cover object-right saturate-100 brightness-100 opacity-100"
+            src={heroImage} 
+            alt="Fachada Principal Centro de Salud Tipo C Rioverde" 
+            className="w-full h-full object-cover object-center saturate-100 brightness-100 opacity-100"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent flex flex-col justify-end p-6 sm:p-12 text-white">

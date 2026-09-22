@@ -5,9 +5,10 @@
 
 import { MedicalService, Benefit, Statistic, BlogItem, MSPManual, DownloadableDocument } from './types';
 import doctorResultsImg from './assets/images/lab_results_rioverde_1780685509630.png';
+import heroRioverdeImg from './assets/images/fachada_rioverde_1790046061110.jpg';
 
-// Let's resolve the actual generated asset paths in code imports inside components, or define them here.
-export const HERO_IMAGE = 'https://lh3.googleusercontent.com/d/1l1mScAlU1cV6nLYjQen-98nSaCL8UvkQ';
+// Main health center banner image (Centro de Salud Rio Verde Tipo C)
+export const HERO_IMAGE = heroRioverdeImg;
 export const DOCTOR_RESULTS_IMAGE = doctorResultsImg;
 
 export const benefitsList: Benefit[] = [

@@ -1,10 +1,78 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 
 const app = express();
 const PORT = 3000;
 const LAB_TARGET = 'https://laboratorio.tipocrioverde.com';
+
+// Ensure public directory exists and is served statically
+const publicDir = path.join(process.cwd(), 'public');
+if (!fs.existsSync(publicDir)) {
+  fs.mkdirSync(publicDir, { recursive: true });
+}
+app.use(express.static(publicDir));
+
+// Endpoint to upload and persist the official banner image
+app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
+  try {
+    const { imageBase64 } = req.body;
+    if (!imageBase64) {
+      return res.status(400).json({ error: 'No image data provided' });
+    }
+    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+    
+    fs.writeFileSync(path.join(publicDir, 'fachada-principal.png'), buffer);
+    fs.writeFileSync(path.join(publicDir, 'fachada principal tipo c rioverde.png'), buffer);
+    
+    try {
+      const srcAssetDir = path.join(process.cwd(), 'src', 'assets', 'images');
+      if (fs.existsSync(srcAssetDir)) {
+        fs.writeFileSync(path.join(srcAssetDir, 'fachada_principal_tipo_c_rioverde.png'), buffer);
+      }
+    } catch (e) {
+      console.warn('Could not write to src/assets:', e);
+    }
+
+    res.json({ success: true, url: '/fachada-principal.png' });
+  } catch (err: any) {
+    console.error('Error saving banner:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint to check if custom uploaded banner exists on server
+app.get('/api/banner-status', (req, res) => {
+  const possiblePaths = [
+    path.join(publicDir, 'fachada-principal.png'),
+    path.join(publicDir, 'fachada principal tipo c rioverde.png'),
+    path.join(publicDir, 'fachada_principal_tipo_c_rioverde.png'),
+    path.join(process.cwd(), 'fachada principal tipo c rioverde.png'),
+    path.join(process.cwd(), 'fachada_principal_tipo_c_rioverde.png'),
+    path.join(process.cwd(), 'fachada.png'),
+    path.join(process.cwd(), 'src', 'assets', 'images', 'fachada principal tipo c rioverde.png'),
+    path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_principal_tipo_c_rioverde.png'),
+  ];
+
+  for (const filePath of possiblePaths) {
+    if (fs.existsSync(filePath)) {
+      const ext = path.extname(filePath) || '.png';
+      const targetPublic = path.join(publicDir, 'fachada-principal' + ext);
+      try {
+        if (filePath !== targetPublic) {
+          fs.copyFileSync(filePath, targetPublic);
+        }
+      } catch (e) {
+        console.warn('Could not copy file to public:', e);
+      }
+      return res.json({ exists: true, url: '/fachada-principal' + ext });
+    }
+  }
+
+  res.json({ exists: false, url: null });
+});
 
 // Handle lab proxy requests
 app.all(['/portal-laboratorio', '/portal-laboratorio/*'], async (req, res) => {
