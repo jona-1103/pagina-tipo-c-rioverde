@@ -5,10 +5,10 @@
 
 import { MedicalService, Benefit, Statistic, BlogItem, MSPManual, DownloadableDocument } from './types';
 import doctorResultsImg from './assets/images/lab_results_rioverde_1780685509630.png';
-import heroRioverdeImg from './assets/images/fachada_rioverde_1790046061110.jpg';
 
 // Main health center banner image (Centro de Salud Rio Verde Tipo C)
-export const HERO_IMAGE = heroRioverdeImg;
+// Dedicated local project route: public/images/banner-rioverde.png
+export const HERO_IMAGE = '/images/banner-rioverde.png';
 export const DOCTOR_RESULTS_IMAGE = doctorResultsImg;
 
 export const benefitsList: Benefit[] = [

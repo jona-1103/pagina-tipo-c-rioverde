@@ -85,7 +85,7 @@ export default function Ubicacion() {
                 <div className="space-y-0.5">
                   <strong className="text-emerald-300 uppercase tracking-wider block font-mono text-[8px]">CENTRAL TELEFÓNICA MSP</strong>
                   <span className="text-emerald-50 leading-relaxed block text-[10.5px]">
-                    +593 (06) 276-8150 <br />
+                    +593 (06) 3700-580 <br />
                     Emergencias: <span className="text-emerald-400 font-mono font-bold">Llamar al 911</span>
                   </span>
                 </div>
@@ -118,7 +118,7 @@ export default function Ubicacion() {
                   <Compass className="w-3 h-3 text-emerald-400" /> REFERENCIA DE LLEGADA
                 </span>
                 <p className="text-[10.5px] text-emerald-100/90 leading-relaxed">
-                  Pasando el puente vía San Lorenzo frente a la camaronera Shimp Ecuador.
+                  Pasando el puente de Rioverde frente a la camaronera Shimp Ecuador
                 </p>
               </div>
             </div>

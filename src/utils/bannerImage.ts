@@ -6,13 +6,13 @@
 import { useState, useEffect } from 'react';
 import { HERO_IMAGE } from '../data';
 
-const STORAGE_KEY = 'rioverde_fachada_banner_url';
+const STORAGE_KEY = 'rioverde_fachada_banner_url_v2';
 const BANNER_EVENT = 'rioverde:banner_updated';
 
 export function getStoredBanner(): string {
   if (typeof window === 'undefined') return HERO_IMAGE;
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) return stored;
+  if (stored && stored.startsWith('data:image/')) return stored;
   return HERO_IMAGE;
 }
 
@@ -40,16 +40,14 @@ export function useBannerImage(): [string, (file: File) => Promise<void>] {
   const [image, setImage] = useState<string>(() => getStoredBanner());
 
   useEffect(() => {
-    // 1. Check if server already has the persisted banner file
+    // 1. Check if server has an official banner file
     fetch('/api/banner-status')
       .then(res => res.json())
       .then(data => {
         if (data.exists && data.url) {
-          // If no custom local override or if matching, use server url
           const local = localStorage.getItem(STORAGE_KEY);
-          if (!local || local.startsWith('/')) {
+          if (!local || !local.startsWith('data:image/')) {
             setImage(data.url);
-            localStorage.setItem(STORAGE_KEY, data.url);
           }
         }
       })

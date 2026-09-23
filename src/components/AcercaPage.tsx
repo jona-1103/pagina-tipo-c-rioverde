@@ -25,10 +25,18 @@ export default function AcercaPage() {
         {/* Majestic main banner block */}
         <div className="relative rounded-3xl h-[280px] sm:h-[400px] overflow-hidden mb-12 shadow-md">
           <img 
-            src={heroImage} 
+            src={heroImage || '/images/banner-rioverde.png'} 
             alt="Fachada Principal Centro de Salud Tipo C Rioverde" 
             className="w-full h-full object-cover object-center saturate-100 brightness-100 opacity-100"
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (target.src.endsWith('/images/banner-rioverde.png')) {
+                target.src = '/images/banner-rioverde.jpg';
+              } else if (target.src.endsWith('/images/banner-rioverde.jpg')) {
+                target.src = '/fachada-principal.png';
+              }
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent flex flex-col justify-end p-6 sm:p-12 text-white">
             <div className="max-w-3xl space-y-3">

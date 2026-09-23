@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Camera, Check, Upload } from 'lucide-react';
 import { useBannerImage } from '../utils/bannerImage';
@@ -18,6 +18,33 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [showSuccessBadge, setShowSuccessBadge] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handlePaste = async (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith('image/')) {
+          const file = items[i].getAsFile();
+          if (file) {
+            try {
+              setIsUploading(true);
+              await uploadBannerFile(file);
+              setShowSuccessBadge(true);
+              setTimeout(() => setShowSuccessBadge(false), 3500);
+            } catch (err) {
+              console.error('Error al pegar imagen:', err);
+            } finally {
+              setIsUploading(false);
+            }
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, [uploadBannerFile]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -81,10 +108,18 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       {/* Background Image of the Modern Health Center Facade */}
       <div className="absolute inset-0 w-full h-full">
         <img
-          src={heroImage}
+          src={heroImage || '/images/banner-rioverde.png'}
           alt="Fachada Principal Centro de Salud Tipo C Rioverde"
           className="w-full h-full object-cover object-center md:object-[center_35%] transition-transform duration-700 ease-out"
           referrerPolicy="no-referrer"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (target.src.endsWith('/images/banner-rioverde.png')) {
+              target.src = '/images/banner-rioverde.jpg';
+            } else if (target.src.endsWith('/images/banner-rioverde.jpg')) {
+              target.src = '/fachada-principal.png';
+            }
+          }}
         />
         {/* Softened white translucent overlay for optimal contrast and text legibility */}
         <div className="absolute inset-x-0 inset-y-0 bg-gradient-to-r from-white/85 via-white/45 via-30% md:via-45% to-transparent pointer-events-none"></div>

@@ -347,7 +347,7 @@ export default function ContactoPage() {
                   <div className="space-y-1">
                     <strong className="text-emerald-300 uppercase tracking-widest font-mono text-[8px] block">Referencia de Llegada</strong>
                     <p className="text-emerald-100/90 leading-relaxed text-[11px]">
-                      Pasando el puente vía San Lorenzo frente a la camaronera Shimp Ecuador.
+                      Pasando el puente de Rioverde frente a la camaronera Shimp Ecuador
                     </p>
                   </div>
                 </div>
@@ -360,7 +360,7 @@ export default function ContactoPage() {
                   <div className="space-y-1">
                     <strong className="text-emerald-300 uppercase tracking-widest font-mono text-[8px] block">Central Telefónica</strong>
                     <p className="text-emerald-100/90 leading-relaxed text-[11px]">
-                      +593 (06) 276-8150 <br />
+                      +593 (06) 3700-580 <br />
                       Emergencias: <span className="text-emerald-400 font-bold">Llamar al 911</span>
                     </p>
                   </div>

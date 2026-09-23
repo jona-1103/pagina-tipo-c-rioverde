@@ -9,8 +9,12 @@ const LAB_TARGET = 'https://laboratorio.tipocrioverde.com';
 
 // Ensure public directory exists and is served statically
 const publicDir = path.join(process.cwd(), 'public');
+const publicImagesDir = path.join(publicDir, 'images');
 if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true });
+}
+if (!fs.existsSync(publicImagesDir)) {
+  fs.mkdirSync(publicImagesDir, { recursive: true });
 }
 app.use(express.static(publicDir));
 
@@ -24,6 +28,8 @@ app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
     
+    fs.writeFileSync(path.join(publicImagesDir, 'banner-rioverde.png'), buffer);
+    fs.writeFileSync(path.join(publicImagesDir, 'banner-rioverde.jpg'), buffer);
     fs.writeFileSync(path.join(publicDir, 'fachada-principal.png'), buffer);
     fs.writeFileSync(path.join(publicDir, 'fachada principal tipo c rioverde.png'), buffer);
     
@@ -36,7 +42,7 @@ app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
       console.warn('Could not write to src/assets:', e);
     }
 
-    res.json({ success: true, url: '/fachada-principal.png' });
+    res.json({ success: true, url: '/images/banner-rioverde.png' });
   } catch (err: any) {
     console.error('Error saving banner:', err);
     res.status(500).json({ error: err.message });
@@ -46,7 +52,12 @@ app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
 // Endpoint to check if custom uploaded banner exists on server
 app.get('/api/banner-status', (req, res) => {
   const possiblePaths = [
+    path.join(publicDir, 'images', 'banner-rioverde.png'),
+    path.join(publicDir, 'images', 'banner-rioverde.jpg'),
+    path.join(publicDir, 'images', 'fachada principal tipo c rioverde.png'),
+    path.join(publicDir, 'images', 'fachada_principal_tipo_c_rioverde.png'),
     path.join(publicDir, 'fachada-principal.png'),
+    path.join(publicDir, 'fachada-principal.jpg'),
     path.join(publicDir, 'fachada principal tipo c rioverde.png'),
     path.join(publicDir, 'fachada_principal_tipo_c_rioverde.png'),
     path.join(process.cwd(), 'fachada principal tipo c rioverde.png'),
@@ -58,8 +69,14 @@ app.get('/api/banner-status', (req, res) => {
 
   for (const filePath of possiblePaths) {
     if (fs.existsSync(filePath)) {
+      if (filePath.includes(path.join('public', 'images', 'banner-rioverde.png'))) {
+        return res.json({ exists: true, url: '/images/banner-rioverde.png' });
+      }
+      if (filePath.includes(path.join('public', 'images', 'banner-rioverde.jpg'))) {
+        return res.json({ exists: true, url: '/images/banner-rioverde.jpg' });
+      }
       const ext = path.extname(filePath) || '.png';
-      const targetPublic = path.join(publicDir, 'fachada-principal' + ext);
+      const targetPublic = path.join(publicDir, 'images', 'banner-rioverde' + ext);
       try {
         if (filePath !== targetPublic) {
           fs.copyFileSync(filePath, targetPublic);
@@ -67,7 +84,7 @@ app.get('/api/banner-status', (req, res) => {
       } catch (e) {
         console.warn('Could not copy file to public:', e);
       }
-      return res.json({ exists: true, url: '/fachada-principal' + ext });
+      return res.json({ exists: true, url: '/images/banner-rioverde' + ext });
     }
   }
 
