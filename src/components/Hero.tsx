@@ -5,8 +5,8 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Camera, Check, Upload } from 'lucide-react';
-import { useBannerImage } from '../utils/bannerImage';
+import { Camera, Check, Upload, Globe } from 'lucide-react';
+import { useBannerImage, syncLocalBannerToServer } from '../utils/bannerImage';
 
 interface HeroProps {
   onOpenAppointment: () => void;
@@ -17,7 +17,24 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [showSuccessBadge, setShowSuccessBadge] = useState(false);
+  const [isSyncingServer, setIsSyncingServer] = useState(false);
+  const [syncSuccessBadge, setSyncSuccessBadge] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const isLocalDataImage = heroImage && heroImage.startsWith('data:image/');
+
+  const handleSyncToServer = async () => {
+    try {
+      setIsSyncingServer(true);
+      const ok = await syncLocalBannerToServer();
+      if (ok) {
+        setSyncSuccessBadge(true);
+        setTimeout(() => setSyncSuccessBadge(false), 4000);
+      }
+    } finally {
+      setIsSyncingServer(false);
+    }
+  };
 
   useEffect(() => {
     const handlePaste = async (e: ClipboardEvent) => {
@@ -115,6 +132,8 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
           onError={(e) => {
             const target = e.currentTarget;
             if (target.src.endsWith('/images/banner-rioverde.png')) {
+              target.src = '/api/banner-image';
+            } else if (target.src.endsWith('/api/banner-image')) {
               target.src = '/images/banner-rioverde.jpg';
             } else if (target.src.endsWith('/images/banner-rioverde.jpg')) {
               target.src = '/fachada-principal.png';
@@ -128,7 +147,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       </div>
 
       {/* Floating control to load/update the exact official facade image */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex flex-col items-end gap-2">
         <input
           ref={fileInputRef}
           type="file"
@@ -160,6 +179,33 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
               {isUploading ? 'Colocando imagen...' : 'Colocar foto oficial de fachada'}
             </span>
           </button>
+        )}
+
+        {/* Sync button for browser where image is already present in localStorage */}
+        {isLocalDataImage && (
+          <div>
+            {syncSuccessBadge ? (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-700 text-white text-xs font-semibold rounded-full shadow-lg border border-emerald-300 animate-fadeIn">
+                <Check className="w-3.5 h-3.5 text-emerald-200" />
+                <span>¡Sincronizada con el servidor!</span>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSyncToServer}
+                disabled={isSyncingServer}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-900/90 hover:bg-emerald-950 text-emerald-100 hover:text-white text-xs font-semibold rounded-full shadow-md border border-emerald-400/80 transition-all cursor-pointer"
+                title="Sincronizar esta imagen con el servidor para que se vea en cualquier navegador y dispositivo"
+              >
+                {isSyncingServer ? (
+                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Globe className="w-3.5 h-3.5 text-emerald-300" />
+                )}
+                <span>Sincronizar con otros navegadores</span>
+              </button>
+            )}
+          </div>
         )}
       </div>
 

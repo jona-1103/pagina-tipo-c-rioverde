@@ -28,11 +28,23 @@ app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
     
+    // Write to public
     fs.writeFileSync(path.join(publicImagesDir, 'banner-rioverde.png'), buffer);
     fs.writeFileSync(path.join(publicImagesDir, 'banner-rioverde.jpg'), buffer);
     fs.writeFileSync(path.join(publicDir, 'fachada-principal.png'), buffer);
     fs.writeFileSync(path.join(publicDir, 'fachada principal tipo c rioverde.png'), buffer);
     
+    // Also write to dist/images if dist exists so production builds immediately serve it
+    const distImagesDir = path.join(process.cwd(), 'dist', 'images');
+    if (fs.existsSync(distImagesDir)) {
+      fs.writeFileSync(path.join(distImagesDir, 'banner-rioverde.png'), buffer);
+      fs.writeFileSync(path.join(distImagesDir, 'banner-rioverde.jpg'), buffer);
+    }
+    const distDir = path.join(process.cwd(), 'dist');
+    if (fs.existsSync(distDir)) {
+      fs.writeFileSync(path.join(distDir, 'fachada-principal.png'), buffer);
+    }
+
     try {
       const srcAssetDir = path.join(process.cwd(), 'src', 'assets', 'images');
       if (fs.existsSync(srcAssetDir)) {
@@ -47,6 +59,25 @@ app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
     console.error('Error saving banner:', err);
     res.status(500).json({ error: err.message });
   }
+});
+
+// Endpoint to stream the banner image directly
+app.get('/api/banner-image', (req, res) => {
+  const possiblePaths = [
+    path.join(publicImagesDir, 'banner-rioverde.png'),
+    path.join(publicImagesDir, 'banner-rioverde.jpg'),
+    path.join(publicDir, 'fachada-principal.png'),
+    path.join(process.cwd(), 'dist', 'images', 'banner-rioverde.png'),
+  ];
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      const ext = path.extname(p).toLowerCase();
+      res.setHeader('Content-Type', ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/png');
+      res.setHeader('Cache-Control', 'public, max-age=300');
+      return fs.createReadStream(p).pipe(res);
+    }
+  }
+  res.status(404).send('Banner not found');
 });
 
 // Endpoint to check if custom uploaded banner exists on server

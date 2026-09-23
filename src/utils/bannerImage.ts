@@ -36,17 +36,56 @@ export async function setBannerImage(imageUrl: string, base64Data?: string) {
   }
 }
 
+export async function syncLocalBannerToServer(): Promise<boolean> {
+  if (typeof window === 'undefined') return false;
+  const local = localStorage.getItem(STORAGE_KEY);
+  if (!local || !local.startsWith('data:image/')) return false;
+
+  try {
+    const res = await fetch('/api/upload-banner', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageBase64: local }),
+    });
+    const data = await res.json();
+    return !!data.success;
+  } catch (err) {
+    console.warn('Failed to sync banner to server:', err);
+    return false;
+  }
+}
+
 export function useBannerImage(): [string, (file: File) => Promise<void>] {
   const [image, setImage] = useState<string>(() => getStoredBanner());
 
   useEffect(() => {
+    // 0. Auto-sync: if this browser holds a local base64 banner, sync it to the server
+    // so that other browsers and devices immediately receive it!
+    const local = localStorage.getItem(STORAGE_KEY);
+    if (local && local.startsWith('data:image/')) {
+      fetch('/api/upload-banner', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64: local }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          console.info('Banner successfully synchronized with server for all browsers.');
+        }
+      })
+      .catch(err => {
+        console.warn('Auto-sync notice:', err);
+      });
+    }
+
     // 1. Check if server has an official banner file
     fetch('/api/banner-status')
       .then(res => res.json())
       .then(data => {
         if (data.exists && data.url) {
-          const local = localStorage.getItem(STORAGE_KEY);
-          if (!local || !local.startsWith('data:image/')) {
+          const currentLocal = localStorage.getItem(STORAGE_KEY);
+          if (!currentLocal || !currentLocal.startsWith('data:image/')) {
             setImage(data.url);
           }
         }
