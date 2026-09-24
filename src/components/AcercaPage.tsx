@@ -43,7 +43,7 @@ export default function AcercaPage() {
                 Acerca de Nuestra Institución
               </h2>
               <p className="text-xs sm:text-sm text-white font-medium leading-relaxed max-w-2xl drop-shadow">
-                Conozca la historia, misión y valores de nuestro complejo clínico principal en Rioverde, Esmeraldas, constituyendo el bastion de salud gratuito del norte de la provincia.
+                Cuidar de usted es nuestra razón de ser. Lo invitamos a conocer la historia, misión y valores del Tipo C Rioverde
               </p>
             </div>
           </div>

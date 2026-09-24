@@ -258,7 +258,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-sm sm:text-base text-gray-800 font-medium leading-relaxed max-w-lg"
           >
-            Brindamos atención médica integral, accesible y de calidad a toda la comunidad. Conoce nuestros servicios, accede a tus resultados y encuentra cómo llegar hasta nosotros.
+            Brindar atención médica integral, accesible y de calidad a toda la comunidad Rioverdeña y de sus parroquias. Conoce nuestros servicios, accede a tus resultados y encuentra cómo llegar hasta nosotros.
           </motion.p>
           
         </div>
