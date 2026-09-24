@@ -3,42 +3,106 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { HERO_IMAGE } from '../data';
 
-const STORAGE_KEY = 'rioverde_fachada_banner_url_v2';
+const PRIMARY_KEY = 'rioverde_fachada_banner_url_v2';
+const FALLBACK_KEYS = [
+  'rioverde_fachada_banner_url_v2',
+  'rioverde_fachada_banner_url',
+  'rioverde_banner_image',
+  'rioverde_fachada_banner',
+  'custom_banner_url',
+  'hero_banner_image',
+];
 const BANNER_EVENT = 'rioverde:banner_updated';
 
 export function getStoredBanner(): string {
   if (typeof window === 'undefined') return HERO_IMAGE;
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored && stored.startsWith('data:image/')) return stored;
+  
+  for (const key of FALLBACK_KEYS) {
+    const stored = localStorage.getItem(key);
+    if (stored && (stored.startsWith('data:image/') || stored.startsWith('/'))) {
+      return stored;
+    }
+  }
+
+  // Scan localStorage for any base64 image key
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && (k.includes('banner') || k.includes('fachada') || k.includes('rioverde'))) {
+        const val = localStorage.getItem(k);
+        if (val && val.startsWith('data:image/')) {
+          return val;
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore storage errors
+  }
+
   return HERO_IMAGE;
+}
+
+export function findLocalBase64Image(): string | null {
+  if (typeof window === 'undefined') return null;
+  for (const key of FALLBACK_KEYS) {
+    const val = localStorage.getItem(key);
+    if (val && val.startsWith('data:image/')) return val;
+  }
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k) {
+        const val = localStorage.getItem(k);
+        if (val && val.startsWith('data:image/')) {
+          return val;
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore storage errors
+  }
+  return null;
 }
 
 export async function setBannerImage(imageUrl: string, base64Data?: string) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem(STORAGE_KEY, imageUrl);
+    localStorage.setItem(PRIMARY_KEY, imageUrl);
     window.dispatchEvent(new CustomEvent(BANNER_EVENT, { detail: imageUrl }));
+    if (typeof BroadcastChannel !== 'undefined') {
+      try {
+        const channel = new BroadcastChannel('rioverde_banner_sync');
+        channel.postMessage({ url: imageUrl });
+        channel.close();
+      } catch (e) {}
+    }
   }
 
-  // If base64 data provided, also persist to server
-  if (base64Data) {
+  // If base64 data provided, also persist to server immediately
+  const toSend = base64Data || (imageUrl.startsWith('data:image/') ? imageUrl : null);
+  if (toSend) {
     try {
-      await fetch('/api/upload-banner', {
+      const res = await fetch('/api/upload-banner', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64: base64Data }),
+        body: JSON.stringify({ imageBase64: toSend }),
       });
+      const data = await res.json();
+      if (data.success && data.url && typeof window !== 'undefined') {
+        localStorage.setItem(PRIMARY_KEY, data.url);
+        window.dispatchEvent(new CustomEvent(BANNER_EVENT, { detail: data.url }));
+      }
     } catch (err) {
       console.warn('Could not persist banner to server:', err);
     }
   }
 }
 
-export async function syncLocalBannerToServer(): Promise<boolean> {
+export async function syncLocalBannerToServer(explicitData?: string): Promise<boolean> {
   if (typeof window === 'undefined') return false;
-  const local = localStorage.getItem(STORAGE_KEY);
+  const local = explicitData || findLocalBase64Image();
   if (!local || !local.startsWith('data:image/')) return false;
 
   try {
@@ -48,51 +112,67 @@ export async function syncLocalBannerToServer(): Promise<boolean> {
       body: JSON.stringify({ imageBase64: local }),
     });
     const data = await res.json();
-    return !!data.success;
+    if (data.success && data.url) {
+      localStorage.setItem(PRIMARY_KEY, data.url);
+      window.dispatchEvent(new CustomEvent(BANNER_EVENT, { detail: data.url }));
+      if (typeof BroadcastChannel !== 'undefined') {
+        try {
+          const channel = new BroadcastChannel('rioverde_banner_sync');
+          channel.postMessage({ url: data.url });
+          channel.close();
+        } catch (e) {}
+      }
+      return true;
+    }
+    return false;
   } catch (err) {
     console.warn('Failed to sync banner to server:', err);
     return false;
   }
 }
 
-export function useBannerImage(): [string, (file: File) => Promise<void>] {
+export function useBannerImage(): [
+  string,
+  (file: File) => Promise<void>,
+  {
+    isLocalDataImage: boolean;
+    syncToServer: () => Promise<boolean>;
+  }
+] {
   const [image, setImage] = useState<string>(() => getStoredBanner());
+  const isLocalDataImage = Boolean(image && image.startsWith('data:image/'));
+
+  const syncToServer = useCallback(async () => {
+    return await syncLocalBannerToServer();
+  }, []);
 
   useEffect(() => {
-    // 0. Auto-sync: if this browser holds a local base64 banner, sync it to the server
-    // so that other browsers and devices immediately receive it!
-    const local = localStorage.getItem(STORAGE_KEY);
-    if (local && local.startsWith('data:image/')) {
-      fetch('/api/upload-banner', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64: local }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          console.info('Banner successfully synchronized with server for all browsers.');
+    // 0. Auto-sync if this browser currently holds a base64 image in localStorage
+    const local = findLocalBase64Image();
+    if (local) {
+      syncLocalBannerToServer(local).then((synced) => {
+        if (synced) {
+          console.info('Banner photo synced to server for cross-browser accessibility.');
         }
-      })
-      .catch(err => {
-        console.warn('Auto-sync notice:', err);
       });
     }
 
-    // 1. Check if server has an official banner file
-    fetch('/api/banner-status')
-      .then(res => res.json())
-      .then(data => {
-        if (data.exists && data.url) {
-          const currentLocal = localStorage.getItem(STORAGE_KEY);
-          if (!currentLocal || !currentLocal.startsWith('data:image/')) {
+    // 1. Check server status with cache busting
+    const checkServerBanner = () => {
+      fetch('/api/banner-status?t=' + Date.now())
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.exists && data.url) {
+            // Server has official banner!
             setImage(data.url);
           }
-        }
-      })
-      .catch(() => {});
+        })
+        .catch(() => {});
+    };
 
-    // 2. Listen to custom event when image is updated
+    checkServerBanner();
+
+    // 2. Listen to internal custom event when image is updated
     const handleUpdate = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
       if (customEvent.detail) {
@@ -100,8 +180,26 @@ export function useBannerImage(): [string, (file: File) => Promise<void>] {
       }
     };
 
+    // 3. Listen to BroadcastChannel across tabs/windows
+    let channel: BroadcastChannel | null = null;
+    if (typeof BroadcastChannel !== 'undefined') {
+      try {
+        channel = new BroadcastChannel('rioverde_banner_sync');
+        channel.onmessage = (event) => {
+          if (event.data?.url) {
+            setImage(event.data.url);
+          }
+        };
+      } catch (e) {}
+    }
+
     window.addEventListener(BANNER_EVENT, handleUpdate);
-    return () => window.removeEventListener(BANNER_EVENT, handleUpdate);
+    return () => {
+      window.removeEventListener(BANNER_EVENT, handleUpdate);
+      if (channel) {
+        channel.close();
+      }
+    };
   }, []);
 
   const uploadFile = async (file: File) => {
@@ -111,6 +209,7 @@ export function useBannerImage(): [string, (file: File) => Promise<void>] {
         try {
           const base64 = reader.result as string;
           await setBannerImage(base64, base64);
+          setImage(base64);
           resolve();
         } catch (e) {
           reject(e);
@@ -121,5 +220,5 @@ export function useBannerImage(): [string, (file: File) => Promise<void>] {
     });
   };
 
-  return [image, uploadFile];
+  return [image, uploadFile, { isLocalDataImage, syncToServer }];
 }

@@ -113,7 +113,7 @@ export const statisticsList: Statistic[] = [
   },
   {
     id: 'profesionales',
-    value: '+60',
+    value: '+20',
     label: 'Profesionales de la salud',
     iconName: 'ShieldCheck',
   },
@@ -126,7 +126,7 @@ export const statisticsList: Statistic[] = [
   {
     id: 'cobertura',
     value: '100%',
-    label: 'Cobertura en todas las parroquias',
+    label: 'Atención a todos los pacientes que vienen de las diferentes parroquias',
     iconName: 'MapPin',
   }
 ];

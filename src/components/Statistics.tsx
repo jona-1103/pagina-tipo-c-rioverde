@@ -122,7 +122,7 @@ export default function Statistics() {
                   <AnimatedCounter value={stat.value} />
                 </div>
                 {/* Short status label */}
-                <span className="text-[11px] text-gray-500 font-semibold uppercase tracking-wider max-w-[150px] leading-normal font-mono">
+                <span className="text-[11px] text-gray-600 font-semibold uppercase tracking-wider max-w-[220px] sm:max-w-[240px] leading-relaxed font-mono px-1">
                   {stat.label}
                 </span>
               </motion.div>

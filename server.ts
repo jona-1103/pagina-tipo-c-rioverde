@@ -16,19 +16,44 @@ if (!fs.existsSync(publicDir)) {
 if (!fs.existsSync(publicImagesDir)) {
   fs.mkdirSync(publicImagesDir, { recursive: true });
 }
+
+// Track banner version timestamp for instant cross-browser cache invalidation
+let bannerTimestamp = Date.now();
+
+// If public banner does not exist or is corrupted/empty (<1KB), initialize with bundled image
+const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'hero_health_center_1779982013572.png');
+const targetBannerPng = path.join(publicImagesDir, 'banner-rioverde.png');
+try {
+  const needsInit = !fs.existsSync(targetBannerPng) || fs.statSync(targetBannerPng).size < 1024;
+  if (needsInit && fs.existsSync(defaultBundledImage)) {
+    fs.copyFileSync(defaultBundledImage, targetBannerPng);
+    fs.copyFileSync(defaultBundledImage, path.join(publicImagesDir, 'banner-rioverde.jpg'));
+    fs.copyFileSync(defaultBundledImage, path.join(publicDir, 'fachada-principal.png'));
+  }
+} catch (e) {
+  console.warn('Initial banner sync warning:', e);
+}
+
 app.use(express.static(publicDir));
 
 // Endpoint to upload and persist the official banner image
 app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
   try {
     const { imageBase64 } = req.body;
-    if (!imageBase64) {
+    if (!imageBase64 || typeof imageBase64 !== 'string') {
       return res.status(400).json({ error: 'No image data provided' });
     }
-    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+    const commaIdx = imageBase64.indexOf(',');
+    const base64Data = commaIdx !== -1 ? imageBase64.substring(commaIdx + 1) : imageBase64;
     const buffer = Buffer.from(base64Data, 'base64');
+
+    if (buffer.length < 100) {
+      return res.status(400).json({ error: 'Invalid image data (too small)' });
+    }
+
+    bannerTimestamp = Date.now();
     
-    // Write to public
+    // Write to public folder
     fs.writeFileSync(path.join(publicImagesDir, 'banner-rioverde.png'), buffer);
     fs.writeFileSync(path.join(publicImagesDir, 'banner-rioverde.jpg'), buffer);
     fs.writeFileSync(path.join(publicDir, 'fachada-principal.png'), buffer);
@@ -54,69 +79,56 @@ app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
       console.warn('Could not write to src/assets:', e);
     }
 
-    res.json({ success: true, url: '/images/banner-rioverde.png' });
+    res.json({
+      success: true,
+      url: `/api/banner-image?t=${bannerTimestamp}`,
+      version: bannerTimestamp
+    });
   } catch (err: any) {
     console.error('Error saving banner:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Endpoint to stream the banner image directly
+// Endpoint to stream the banner image directly with strict no-cache headers
 app.get('/api/banner-image', (req, res) => {
   const possiblePaths = [
     path.join(publicImagesDir, 'banner-rioverde.png'),
     path.join(publicImagesDir, 'banner-rioverde.jpg'),
     path.join(publicDir, 'fachada-principal.png'),
-    path.join(process.cwd(), 'dist', 'images', 'banner-rioverde.png'),
+    defaultBundledImage,
   ];
   for (const p of possiblePaths) {
-    if (fs.existsSync(p)) {
+    if (fs.existsSync(p) && fs.statSync(p).size > 1024) {
       const ext = path.extname(p).toLowerCase();
       res.setHeader('Content-Type', ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/png');
-      res.setHeader('Cache-Control', 'public, max-age=300');
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
       return fs.createReadStream(p).pipe(res);
     }
   }
   res.status(404).send('Banner not found');
 });
 
-// Endpoint to check if custom uploaded banner exists on server
+// Endpoint to check if official banner exists on server
 app.get('/api/banner-status', (req, res) => {
-  const possiblePaths = [
-    path.join(publicDir, 'images', 'banner-rioverde.png'),
-    path.join(publicDir, 'images', 'banner-rioverde.jpg'),
-    path.join(publicDir, 'images', 'fachada principal tipo c rioverde.png'),
-    path.join(publicDir, 'images', 'fachada_principal_tipo_c_rioverde.png'),
-    path.join(publicDir, 'fachada-principal.png'),
-    path.join(publicDir, 'fachada-principal.jpg'),
-    path.join(publicDir, 'fachada principal tipo c rioverde.png'),
-    path.join(publicDir, 'fachada_principal_tipo_c_rioverde.png'),
-    path.join(process.cwd(), 'fachada principal tipo c rioverde.png'),
-    path.join(process.cwd(), 'fachada_principal_tipo_c_rioverde.png'),
-    path.join(process.cwd(), 'fachada.png'),
-    path.join(process.cwd(), 'src', 'assets', 'images', 'fachada principal tipo c rioverde.png'),
-    path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_principal_tipo_c_rioverde.png'),
-  ];
+  const bannerFile = path.join(publicImagesDir, 'banner-rioverde.png');
+  if (fs.existsSync(bannerFile) && fs.statSync(bannerFile).size > 1024) {
+    return res.json({
+      exists: true,
+      url: `/api/banner-image?t=${bannerTimestamp}`,
+      version: bannerTimestamp
+    });
+  }
 
-  for (const filePath of possiblePaths) {
-    if (fs.existsSync(filePath)) {
-      if (filePath.includes(path.join('public', 'images', 'banner-rioverde.png'))) {
-        return res.json({ exists: true, url: '/images/banner-rioverde.png' });
-      }
-      if (filePath.includes(path.join('public', 'images', 'banner-rioverde.jpg'))) {
-        return res.json({ exists: true, url: '/images/banner-rioverde.jpg' });
-      }
-      const ext = path.extname(filePath) || '.png';
-      const targetPublic = path.join(publicDir, 'images', 'banner-rioverde' + ext);
-      try {
-        if (filePath !== targetPublic) {
-          fs.copyFileSync(filePath, targetPublic);
-        }
-      } catch (e) {
-        console.warn('Could not copy file to public:', e);
-      }
-      return res.json({ exists: true, url: '/images/banner-rioverde' + ext });
-    }
+  // Fallback to bundled asset
+  if (fs.existsSync(defaultBundledImage) && fs.statSync(defaultBundledImage).size > 1024) {
+    return res.json({
+      exists: true,
+      url: `/api/banner-image?t=${bannerTimestamp}`,
+      version: bannerTimestamp
+    });
   }
 
   res.json({ exists: false, url: null });

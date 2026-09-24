@@ -5,15 +5,16 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Camera, Check, Upload, Globe } from 'lucide-react';
-import { useBannerImage, syncLocalBannerToServer } from '../utils/bannerImage';
+import { Camera, Check, Upload, Globe, RefreshCw } from 'lucide-react';
+import { useBannerImage } from '../utils/bannerImage';
+import defaultFallbackImg from '../assets/images/hero_health_center_1779982013572.png';
 
 interface HeroProps {
   onOpenAppointment: () => void;
 }
 
 export default function Hero({ onOpenAppointment }: HeroProps) {
-  const [heroImage, uploadBannerFile] = useBannerImage();
+  const [heroImage, uploadBannerFile, { isLocalDataImage, syncToServer }] = useBannerImage();
   const [isUploading, setIsUploading] = useState(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [showSuccessBadge, setShowSuccessBadge] = useState(false);
@@ -21,15 +22,13 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
   const [syncSuccessBadge, setSyncSuccessBadge] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const isLocalDataImage = heroImage && heroImage.startsWith('data:image/');
-
   const handleSyncToServer = async () => {
     try {
       setIsSyncingServer(true);
-      const ok = await syncLocalBannerToServer();
+      const ok = await syncToServer();
       if (ok) {
         setSyncSuccessBadge(true);
-        setTimeout(() => setSyncSuccessBadge(false), 4000);
+        setTimeout(() => setSyncSuccessBadge(false), 5000);
       }
     } finally {
       setIsSyncingServer(false);
@@ -125,18 +124,14 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       {/* Background Image of the Modern Health Center Facade */}
       <div className="absolute inset-0 w-full h-full">
         <img
-          src={heroImage || '/images/banner-rioverde.png'}
+          src={heroImage || '/api/banner-image'}
           alt="Fachada Principal Centro de Salud Tipo C Rioverde"
           className="w-full h-full object-cover object-center md:object-[center_35%] transition-transform duration-700 ease-out"
           referrerPolicy="no-referrer"
           onError={(e) => {
             const target = e.currentTarget;
-            if (target.src.endsWith('/images/banner-rioverde.png')) {
-              target.src = '/api/banner-image';
-            } else if (target.src.endsWith('/api/banner-image')) {
-              target.src = '/images/banner-rioverde.jpg';
-            } else if (target.src.endsWith('/images/banner-rioverde.jpg')) {
-              target.src = '/fachada-principal.png';
+            if (target.src !== defaultFallbackImg) {
+              target.src = defaultFallbackImg;
             }
           }}
         />
@@ -160,49 +155,53 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
         {showSuccessBadge ? (
           <div className="flex items-center gap-2 px-4 py-2 bg-emerald-800 text-white text-xs sm:text-sm font-semibold rounded-full shadow-xl border border-emerald-400 animate-fadeIn">
             <Check className="w-4 h-4 text-emerald-300 shrink-0" />
-            <span>Foto de fachada colocada exitosamente</span>
+            <span>Foto de fachada actualizada y sincronizada</span>
           </div>
         ) : (
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs sm:text-sm font-bold rounded-full shadow-lg hover:shadow-xl border border-emerald-500/70 transition-all duration-200 cursor-pointer"
-            title="Haz clic para seleccionar la imagen 'fachada principal tipo c rioverde.png' o arrástrala sobre este banner"
-          >
-            {isUploading ? (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <Camera className="w-4 h-4 text-emerald-200 shrink-0" />
-            )}
-            <span>
-              {isUploading ? 'Colocando imagen...' : 'Colocar foto oficial de fachada'}
-            </span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 bg-emerald-900/90 hover:bg-emerald-950 active:scale-95 text-white text-xs sm:text-sm font-bold rounded-full shadow-lg hover:shadow-xl border border-emerald-400/80 backdrop-blur-md transition-all duration-200 cursor-pointer"
+              title="Selecciona la foto oficial de la fachada de tu computadora o dispositivo"
+            >
+              {isUploading ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Camera className="w-4 h-4 text-emerald-300 shrink-0" />
+              )}
+              <span>
+                {isUploading ? 'Guardando foto...' : 'Colocar foto oficial de fachada'}
+              </span>
+            </button>
+          </div>
         )}
 
-        {/* Sync button for browser where image is already present in localStorage */}
+        {/* Sync button for browser where image is stored locally */}
         {isLocalDataImage && (
           <div>
             {syncSuccessBadge ? (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-700 text-white text-xs font-semibold rounded-full shadow-lg border border-emerald-300 animate-fadeIn">
-                <Check className="w-3.5 h-3.5 text-emerald-200" />
-                <span>¡Sincronizada con el servidor!</span>
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-700 text-white text-xs font-semibold rounded-full shadow-lg border border-emerald-300 animate-fadeIn">
+                <Check className="w-3.5 h-3.5 text-emerald-200 shrink-0" />
+                <span>¡Sincronizada con el servidor para todos los navegadores!</span>
               </div>
             ) : (
               <button
                 type="button"
                 onClick={handleSyncToServer}
                 disabled={isSyncingServer}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-900/90 hover:bg-emerald-950 text-emerald-100 hover:text-white text-xs font-semibold rounded-full shadow-md border border-emerald-400/80 transition-all cursor-pointer"
-                title="Sincronizar esta imagen con el servidor para que se vea en cualquier navegador y dispositivo"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-800 hover:bg-emerald-900 text-emerald-100 hover:text-white text-xs font-semibold rounded-full shadow-md border border-emerald-400 transition-all cursor-pointer animate-pulse"
+                title="Sincronizar esta imagen con el servidor para que se vea en cualquier otro navegador, pestaña o dispositivo"
               >
                 {isSyncingServer ? (
                   <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  <Globe className="w-3.5 h-3.5 text-emerald-300" />
+                  <Globe className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
                 )}
-                <span>Sincronizar con otros navegadores</span>
+                <span>
+                  {isSyncingServer ? 'Sincronizando...' : '🌐 Sincronizar con otros navegadores'}
+                </span>
               </button>
             )}
           </div>
