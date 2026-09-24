@@ -5,30 +5,34 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Camera, Check, Upload, Globe, RefreshCw } from 'lucide-react';
+import { Camera, Check, Upload, Globe, Download, Info } from 'lucide-react';
 import { useBannerImage } from '../utils/bannerImage';
-import defaultFallbackImg from '../assets/images/hero_health_center_1779982013572.png';
+import defaultFallbackImg from '../assets/images/fachada_rioverde_salud_1790262024991.jpg';
 
 interface HeroProps {
   onOpenAppointment: () => void;
 }
 
 export default function Hero({ onOpenAppointment }: HeroProps) {
-  const [heroImage, uploadBannerFile, { isLocalDataImage, syncToServer }] = useBannerImage();
+  const [heroImage, uploadBannerFile, { isLocalDataImage, syncToServer, downloadBanner }] = useBannerImage();
   const [isUploading, setIsUploading] = useState(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [showSuccessBadge, setShowSuccessBadge] = useState(false);
   const [isSyncingServer, setIsSyncingServer] = useState(false);
   const [syncSuccessBadge, setSyncSuccessBadge] = useState(false);
+  const [showStaticNotice, setShowStaticNotice] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSyncToServer = async () => {
     try {
       setIsSyncingServer(true);
-      const ok = await syncToServer();
-      if (ok) {
+      const res = await syncToServer();
+      if (res.success) {
         setSyncSuccessBadge(true);
         setTimeout(() => setSyncSuccessBadge(false), 5000);
+      } else if (res.isStatic) {
+        setShowStaticNotice(true);
+        setTimeout(() => setShowStaticNotice(false), 9000);
       }
     } finally {
       setIsSyncingServer(false);
@@ -116,7 +120,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
             Suelta aquí la foto de la fachada
           </h3>
           <p className="text-sm text-emerald-200 mt-1 font-mono">
-            fachada principal tipo c rioverde.png
+            banner-rioverde.png
           </p>
         </div>
       )}
@@ -124,7 +128,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       {/* Background Image of the Modern Health Center Facade */}
       <div className="absolute inset-0 w-full h-full">
         <img
-          src={heroImage || '/api/banner-image'}
+          src={heroImage || '/images/banner-rioverde.png'}
           alt="Fachada Principal Centro de Salud Tipo C Rioverde"
           className="w-full h-full object-cover object-center md:object-[center_35%] transition-transform duration-700 ease-out"
           referrerPolicy="no-referrer"
@@ -141,8 +145,8 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
         <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white to-transparent lg:hidden pointer-events-none"></div>
       </div>
 
-      {/* Floating control to load/update the exact official facade image */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex flex-col items-end gap-2">
+      {/* Floating controls to load, update or download the official facade image */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex flex-col items-end gap-2 max-w-sm">
         <input
           ref={fileInputRef}
           type="file"
@@ -155,7 +159,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
         {showSuccessBadge ? (
           <div className="flex items-center gap-2 px-4 py-2 bg-emerald-800 text-white text-xs sm:text-sm font-semibold rounded-full shadow-xl border border-emerald-400 animate-fadeIn">
             <Check className="w-4 h-4 text-emerald-300 shrink-0" />
-            <span>Foto de fachada actualizada y sincronizada</span>
+            <span>Foto de fachada cargada con éxito</span>
           </div>
         ) : (
           <div className="flex items-center gap-2">
@@ -178,31 +182,55 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
           </div>
         )}
 
-        {/* Sync button for browser where image is stored locally */}
+        {/* Action buttons when user has custom photo in browser */}
         {isLocalDataImage && (
-          <div>
-            {syncSuccessBadge ? (
-              <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-700 text-white text-xs font-semibold rounded-full shadow-lg border border-emerald-300 animate-fadeIn">
-                <Check className="w-3.5 h-3.5 text-emerald-200 shrink-0" />
-                <span>¡Sincronizada con el servidor para todos los navegadores!</span>
-              </div>
-            ) : (
+          <div className="flex flex-col items-end gap-1.5">
+            <div className="flex items-center gap-1.5 flex-wrap justify-end">
+              {/* Download banner file directly for static hosting (tipocrioverde.com) */}
               <button
                 type="button"
-                onClick={handleSyncToServer}
-                disabled={isSyncingServer}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-800 hover:bg-emerald-900 text-emerald-100 hover:text-white text-xs font-semibold rounded-full shadow-md border border-emerald-400 transition-all cursor-pointer animate-pulse"
-                title="Sincronizar esta imagen con el servidor para que se vea en cualquier otro navegador, pestaña o dispositivo"
+                onClick={downloadBanner}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-semibold rounded-full shadow-md border border-emerald-400/90 transition-all cursor-pointer"
+                title="Descarga la imagen para reemplazarla en la carpeta public/images o en el administrador de archivos de tu hosting"
               >
-                {isSyncingServer ? (
-                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <Globe className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
-                )}
-                <span>
-                  {isSyncingServer ? 'Sincronizando...' : '🌐 Sincronizar con otros navegadores'}
-                </span>
+                <Download className="w-3.5 h-3.5 text-emerald-200 shrink-0" />
+                <span>Descargar banner-rioverde.png</span>
               </button>
+
+              {/* Sync button */}
+              {syncSuccessBadge ? (
+                <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-700 text-white text-xs font-semibold rounded-full shadow-lg border border-emerald-300 animate-fadeIn">
+                  <Check className="w-3.5 h-3.5 text-emerald-200 shrink-0" />
+                  <span>¡Sincronizada con el servidor!</span>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSyncToServer}
+                  disabled={isSyncingServer}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-emerald-900/80 hover:bg-emerald-950 text-emerald-100 hover:text-white text-xs font-semibold rounded-full shadow-sm border border-emerald-500/60 transition-all cursor-pointer"
+                  title="Sincronizar con el servidor de la aplicación"
+                >
+                  {isSyncingServer ? (
+                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Globe className="w-3 h-3 text-emerald-300 shrink-0" />
+                  )}
+                  <span>{isSyncingServer ? 'Sincronizando...' : 'Sincronizar'}</span>
+                </button>
+              )}
+            </div>
+
+            {/* Static notice explanation if on tipocrioverde.com or static host */}
+            {showStaticNotice && (
+              <div className="bg-emerald-950/95 text-emerald-100 text-[11px] p-2.5 rounded-xl border border-emerald-400 shadow-xl max-w-xs text-right leading-tight animate-fadeIn">
+                <div className="flex items-start gap-1.5 text-left">
+                  <Info className="w-4 h-4 text-emerald-300 shrink-0 mt-0.5" />
+                  <p>
+                    Tu sitio en producción es estático. Para que la foto se vea permanente en todos los navegadores y celulares, haz clic en <strong>«Descargar banner-rioverde.png»</strong> y súbela a tu hosting en la carpeta <code>public/images/</code>.
+                  </p>
+                </div>
+              </div>
             )}
           </div>
         )}

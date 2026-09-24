@@ -20,8 +20,8 @@ if (!fs.existsSync(publicImagesDir)) {
 // Track banner version timestamp for instant cross-browser cache invalidation
 let bannerTimestamp = Date.now();
 
-// If public banner does not exist or is corrupted/empty (<1KB), initialize with bundled image
-const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'hero_health_center_1779982013572.png');
+// If public banner does not exist or is corrupted/empty (<1KB), initialize with authentic health center image
+const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_rioverde_salud_1790262024991.jpg');
 const targetBannerPng = path.join(publicImagesDir, 'banner-rioverde.png');
 try {
   const needsInit = !fs.existsSync(targetBannerPng) || fs.statSync(targetBannerPng).size < 1024;
@@ -29,6 +29,7 @@ try {
     fs.copyFileSync(defaultBundledImage, targetBannerPng);
     fs.copyFileSync(defaultBundledImage, path.join(publicImagesDir, 'banner-rioverde.jpg'));
     fs.copyFileSync(defaultBundledImage, path.join(publicDir, 'fachada-principal.png'));
+    fs.copyFileSync(defaultBundledImage, path.join(publicDir, 'fachada principal tipo c rioverde.png'));
   }
 } catch (e) {
   console.warn('Initial banner sync warning:', e);

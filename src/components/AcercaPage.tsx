@@ -32,8 +32,6 @@ export default function AcercaPage() {
             onError={(e) => {
               const target = e.currentTarget;
               if (target.src.endsWith('/images/banner-rioverde.png')) {
-                target.src = '/api/banner-image';
-              } else if (target.src.endsWith('/api/banner-image')) {
                 target.src = '/images/banner-rioverde.jpg';
               } else if (target.src.endsWith('/images/banner-rioverde.jpg')) {
                 target.src = '/fachada-principal.png';
