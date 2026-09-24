@@ -6,6 +6,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useBannerImage } from '../utils/bannerImage';
+import defaultFallbackImg from '../assets/images/fachada_rioverde_salud_1790262024991.jpg';
 import { HeartPulse, ShieldCheck, Award, Eye, Compass, Target, Sparkles, Building2, BookOpen, Users } from 'lucide-react';
 
 export default function AcercaPage() {
@@ -31,10 +32,8 @@ export default function AcercaPage() {
             referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.currentTarget;
-              if (target.src.endsWith('/images/banner-rioverde.png')) {
-                target.src = '/images/banner-rioverde.jpg';
-              } else if (target.src.endsWith('/images/banner-rioverde.jpg')) {
-                target.src = '/fachada-principal.png';
+              if (target.src !== defaultFallbackImg) {
+                target.src = defaultFallbackImg;
               }
             }}
           />
