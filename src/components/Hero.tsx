@@ -7,7 +7,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Camera, Check, Upload, Globe, Download, Info } from 'lucide-react';
 import { useBannerImage } from '../utils/bannerImage';
-import defaultFallbackImg from '../assets/images/fachada_rioverde_salud_1790262024991.jpg';
+import defaultFallbackImg from '../assets/images/fachada_oficial_rioverde_1790272293009.jpg';
 
 interface HeroProps {
   onOpenAppointment: () => void;

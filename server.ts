@@ -21,7 +21,7 @@ if (!fs.existsSync(publicImagesDir)) {
 let bannerTimestamp = Date.now();
 
 // If public banner does not exist or is corrupted/empty (<1KB), initialize with authentic health center image
-const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_rioverde_salud_1790262024991.jpg');
+const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_oficial_rioverde_1790272293009.jpg');
 const targetBannerPng = path.join(publicImagesDir, 'banner-rioverde.png');
 try {
   const needsInit = !fs.existsSync(targetBannerPng) || fs.statSync(targetBannerPng).size < 1024;
@@ -75,6 +75,9 @@ app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
       const srcAssetDir = path.join(process.cwd(), 'src', 'assets', 'images');
       if (fs.existsSync(srcAssetDir)) {
         fs.writeFileSync(path.join(srcAssetDir, 'fachada_principal_tipo_c_rioverde.png'), buffer);
+        fs.writeFileSync(path.join(srcAssetDir, 'fachada_oficial_rioverde_1790272293009.jpg'), buffer);
+        fs.writeFileSync(path.join(srcAssetDir, 'fachada_rioverde_salud_1790262024991.jpg'), buffer);
+        fs.writeFileSync(path.join(srcAssetDir, 'hero_health_center_1779982013572.png'), buffer);
       }
     } catch (e) {
       console.warn('Could not write to src/assets:', e);

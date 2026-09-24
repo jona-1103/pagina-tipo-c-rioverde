@@ -6,7 +6,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useBannerImage } from '../utils/bannerImage';
-import defaultFallbackImg from '../assets/images/fachada_rioverde_salud_1790262024991.jpg';
+import defaultFallbackImg from '../assets/images/fachada_oficial_rioverde_1790272293009.jpg';
 import { HeartPulse, ShieldCheck, Award, Eye, Compass, Target, Sparkles, Building2, BookOpen, Users } from 'lucide-react';
 
 export default function AcercaPage() {
