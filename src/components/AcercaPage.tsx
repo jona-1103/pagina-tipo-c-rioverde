@@ -71,7 +71,7 @@ export default function AcercaPage() {
                 El nuevo modelo se basa en la promoción de la salud and en la prevención de enfermedades, con calidad en la atención y respeto a la diversidad cultural.
               </p>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-bold text-emerald-900 bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-100">
-                El Centro de Salud Rioverde beneficiará a más de 32.000 mil habitantes de las parroquias Rioverde, Rocafuerte, Montalvo, Lagarto, Chontaduro, Chumundé entre otras más.
+                El Centro de Salud Rioverde beneficiará a más de 35.000 mil habitantes de las parroquias Rioverde, Rocafuerte, Montalvo, Lagarto, Chontaduro, Chumundé entre otras más.
               </p>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-sans">
                 La obra tardó 30 meses (desde enero del 2013- junio 2015) y tuvo una inversión de 3,6 millones de dólares (Infraestructura 2’704.745; Equipamiento 908.509). • La construcción es de 2.646 m2 y está en un predio de 7.225 m2 donado por el GAD de Rioverde, que colaboró además con algunas obras de saneamiento.
@@ -173,7 +173,7 @@ export default function AcercaPage() {
                   </div>
                   <div>
                     <strong className="text-xs font-bold text-gray-900 block font-sans">Población Protegida</strong>
-                    <span className="text-[11px] text-gray-500 leading-normal block">Más de 32,000 habitantes permanentes en el territorio de Rioverde y la costa esmeraldeña.</span>
+                    <span className="text-[11px] text-gray-500 leading-normal block">Más de 35,000 habitantes permanentes en el territorio de Rioverde y la costa esmeraldeña.</span>
                   </div>
                 </div>
               </div>
