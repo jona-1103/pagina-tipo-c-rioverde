@@ -42,7 +42,7 @@ export default function Services({ onBookSpecialty, onNavigateToServices }: Serv
           </h3>
           <div className="w-12 h-1 bg-emerald-500 mx-auto rounded"></div>
           <p className="text-xs sm:text-sm text-gray-500 leading-relaxed pt-1">
-            Como un centro de salud de primer nivel y emergencias de respuesta inmediata, unificamos servicios especializados para brindar un cuidado de excelencia, humano, equitativo e integral a cada familia de Rioverde.
+            Como un centro de salud de primer nivel y emergencias, nuestros servicios están para brindar un cuidado de excelencia, humano, equitativo e integral a cada familia de población Rioverdeña.
           </p>
         </motion.div>
 
