@@ -41,9 +41,9 @@ export const servicesList: MedicalService[] = [
     details: [
       'Medicina General y Familiar',
       'Ginecología y Obstetricia (Control Prenatal)',
-      'Odontología General y Profilaxis',
+      'Odontología General',
       'Psicología Clínica y Salud Mental',
-      'Nutrición y Asesoramiento Alimentario'
+      'Nutrición'
     ]
   },
   {
@@ -80,10 +80,10 @@ export const servicesList: MedicalService[] = [
     description: 'Laboratorio con equipos tecnológicos para los diagnósticos precisos de forma rápida.',
     iconName: 'FlaskConical',
     details: [
-      'Laboratorio Clínico Automatizado (Hemograma, Bioquímica, Hormonales)',
-      'Radiología Digital de Baja Radiación',
+      'Laboratorio Clínico Automatizado (Hemograma, Bioquímica)',
+      'Radiología',
       'Ecografía Pélvica, General y Obstétrica Avanzada',
-      'Espirometrías y Electrocardiogramas de Reposo',
+      'Electrocardiogramas',
       'Farmacia Institucional (Dispensación Gratuita de receta MSP)',
       'Control de Calidad de Toma de Muestras'
     ]

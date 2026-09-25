@@ -42,7 +42,7 @@ export default function ServiciosPage({ onBookSpecialty }: ServiciosPageProps) {
           </h2>
           <div className="w-16 h-1 w-24 bg-emerald-600 mx-auto rounded-full"></div>
           <p className="text-sm text-gray-500 leading-relaxed pt-2">
-            El Centro de Salud Tipo C Rioverde opera bajo altos estándares del Ministerio de Salud Pública de Ecuador. Contamos con equipamiento moderno y un equipo multidisciplinario para ofrecer atención 100% gratuita y de calidad.
+            El Centro de Salud Tipo C Rioverde opera bajo altos estándares del Ministerio de Salud Pública de Ecuador. Contamos con un equipo multidisciplinario para ofrecer atención 100% gratuita y de calidad.
           </p>
         </div>
 
