@@ -6,7 +6,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useBannerImage } from '../utils/bannerImage';
-import defaultFallbackImg from '../assets/images/fachada_oficial_rioverde_1790272293009.jpg';
+import { HERO_IMAGE } from '../data';
+import defaultFallbackImg from '../assets/images/fachada_principal_tipo_c_rioverde.png';
 import { HeartPulse, ShieldCheck, Award, Eye, Compass, Target, Sparkles, Building2, BookOpen, Users } from 'lucide-react';
 
 export default function AcercaPage() {
@@ -26,7 +27,7 @@ export default function AcercaPage() {
         {/* Majestic main banner block */}
         <div className="relative rounded-3xl h-[280px] sm:h-[400px] overflow-hidden mb-12 shadow-md">
           <img 
-            src={heroImage || '/images/banner-rioverde.png'} 
+            src={heroImage || HERO_IMAGE} 
             alt="Fachada Principal Centro de Salud Tipo C Rioverde" 
             className="w-full h-full object-cover object-center saturate-100 brightness-100 opacity-100"
             referrerPolicy="no-referrer"

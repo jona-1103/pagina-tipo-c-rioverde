@@ -5,11 +5,13 @@
 
 import { MedicalService, Benefit, Statistic, BlogItem, MSPManual, DownloadableDocument } from './types';
 import doctorResultsImg from './assets/images/lab_results_rioverde_1780685509630.png';
+import heroBannerImg from './assets/images/fachada_principal_tipo_c_rioverde.png';
+import ecografiaDoctorImg from './assets/images/doctor_ecografia_rioverde_1791220643957.jpg';
 
 // Main health center banner image (Centro de Salud Rio Verde Tipo C)
-// Dedicated local project route: public/images/banner-rioverde.png
-export const HERO_IMAGE = '/images/banner-rioverde.png';
+export const HERO_IMAGE = heroBannerImg;
 export const DOCTOR_RESULTS_IMAGE = doctorResultsImg;
+export const ECOGRAFIA_IMAGE = ecografiaDoctorImg;
 
 export const benefitsList: Benefit[] = [
   {
@@ -288,3 +290,4 @@ export const timeSlotsList = [
   '03:00 PM - 03:30 PM',
   '03:30 PM - 04:00 PM'
 ];
+

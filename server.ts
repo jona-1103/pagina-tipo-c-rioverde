@@ -2,10 +2,21 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
+import { GoogleGenAI } from '@google/genai';
 
 const app = express();
 const PORT = 3000;
 const LAB_TARGET = 'https://laboratorio.tipocrioverde.com';
+
+// Initialize Gemini client on server side
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+  httpOptions: {
+    headers: {
+      'User-Agent': 'aistudio-build',
+    },
+  },
+});
 
 // Ensure public directory exists and is served statically
 const publicDir = path.join(process.cwd(), 'public');
@@ -21,7 +32,7 @@ if (!fs.existsSync(publicImagesDir)) {
 let bannerTimestamp = Date.now();
 
 // If public banner does not exist or is corrupted/empty (<1KB), initialize with authentic health center image
-const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_oficial_rioverde_1790272293009.jpg');
+const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_principal_tipo_c_rioverde.png');
 const targetBannerPng = path.join(publicImagesDir, 'banner-rioverde.png');
 try {
   const needsInit = !fs.existsSync(targetBannerPng) || fs.statSync(targetBannerPng).size < 1024;
@@ -136,6 +147,146 @@ app.get('/api/banner-status', (req, res) => {
   }
 
   res.json({ exists: false, url: null });
+});
+
+// Knowledge base fallback for Centro de Salud Tipo C Rioverde
+function generateKnowledgeFallback(query: string): string {
+  const q = query.toLowerCase();
+
+  if (q.includes('horario') || q.includes('hora') || q.includes('abierto') || q.includes('cuando')) {
+    return `🕒 **Horarios de Atención del Centro de Salud Tipo C Rioverde:**\n\n• **Emergencias:** 24 horas al día, 7 días a la semana (24/7), los 365 días del año.\n• **Consulta Externa:** Lunes a Viernes de 07:00 a 19:00 (en jornadas matutina y vespertina).\n• **Laboratorio Clínico:** Toma de muestras de 07:00 a 10:00 (emergencias 24/7).\n• **Farmacia:** 24/7 para emergencias; 07:00 a 19:00 para consulta externa.\n• **Vacunación:** Lunes a Viernes de 08:00 a 16:00.\n• **Rehabilitación Física:** Lunes a Viernes de 08:00 a 16:30.`;
+  }
+
+  if (q.includes('servicio') || q.includes('especialidad') || q.includes('atienden') || q.includes('que tienen') || q.includes('medicos')) {
+    return `🏥 **Servicios Médicos Disponibles (100% Gratuitos):**\n\n1. **Medicina General y Familiar**\n2. **Emergencias Médicas 24 Horas** con sala de choque y observación\n3. **Ginecología, Obstetricia y Parto Humanizado e Intercultural**\n4. **Pediatría y Control de Crecimiento del Niño Sano**\n5. **Odontología General y Prevención Bucal**\n6. **Laboratorio Clínico Automatizado** con consulta de resultados web\n7. **Rayos X y Ecografía General**\n8. **Rehabilitación Física y Fisioterapia**\n9. **Psicología Clínica y Apoyo Emocional**\n10. **Nutrición y Dietética**\n11. **Farmacia Institucional Gratuita MSP**\n12. **Vacunatorio del Esquema Nacional**`;
+  }
+
+  if (q.includes('cita') || q.includes('turno') || q.includes('agendar') || q.includes('sacar cita') || q.includes('whatsapp') || q.includes('agendamiento')) {
+    return `📅 **¿Cómo agendar una Cita Médica?**\n\n• 🌐 **Agendamiento Tipo C en Línea:** Ingresa directamente a nuestro sistema oficial [https://agendamiento.tipocrioverde.com/](https://agendamiento.tipocrioverde.com/) disponible 24/7.\n• 📱 **Vía WhatsApp Oficial:** Puedes agendar tu turno escribiendo al **+593 96 117 1171** (o 096 117 1171).\n• 🏢 **Presencial en Admisión:** Acude de Lunes a Viernes de 07:00 a 16:00 portando tu cédula de identidad.\n\n⚠️ **Nota Importante:** Las urgencias y emergencias **NO necesitan cita previa**; se atienden de inmediato en el área de Triage 24h.`;
+  }
+
+  if (q.includes('costo') || q.includes('precio') || q.includes('gratis') || q.includes('cuanto cuesta') || q.includes('cobran')) {
+    return `💚 **¡Todos los servicios son 100% GRATUITOS!**\n\nEn el Centro de Salud Tipo C Rioverde no se cobra por ninguna atención médica, exámenes de sangre/orina, ecografías, radiografías ni medicamentos en farmacia. Todo está financiado y garantizado por el Ministerio de Salud Pública del Ecuador (MSP).`;
+  }
+
+  if (q.includes('laboratorio') || q.includes('muestra') || q.includes('resultado') || q.includes('examen') || q.includes('sangre')) {
+    return `🧪 **Laboratorio Clínico y Entrega de Resultados:**\n\n• **Toma de Muestras:** Lunes a Viernes de 07:00 a 10:00 (en ayunas). Emergencias procesadas 24/7.\n• **Consulta de Resultados en Línea:** En nuestro sitio web puedes acceder a la sección *«Consulta de Resultados de Laboratorio»*, ingresar tu número de cédula y descargar tus informes médicos firmados electrónicamente.`;
+  }
+
+  if (q.includes('ubicacion') || q.includes('donde') || q.includes('direccion') || q.includes('llegar') || q.includes('mapa')) {
+    return `📍 **Ubicación del Centro de Salud:**\n\nEstamos ubicados en el **Cantón Rioverde, Carretero Principal Vía a la Costa** (frente a la cancha deportiva del GAD Municipal de Rioverde), Provincia de Esmeraldas, Ecuador. Contamos con estacionamiento, acceso para ambulancias y rampas para personas con movilidad reducida.`;
+  }
+
+  if (q.includes('emergencia') || q.includes('urgencia') || q.includes('grave') || q.includes('accidente') || q.includes('dolor fuerte')) {
+    return `🚨 **Área de Emergencias 24 Horas:**\n\nNuestra sala de Emergencias opera ininterrumpidamente las 24 horas del día. Si tú o un familiar presentan un dolor agudo, hemorragia, dificultad respiratoria, herida profunda o trabajo de parto, **acude de inmediato a triage**. No se requiere cita ni trámites previos para salvar vidas.`;
+  }
+
+  if (q.includes('parto') || q.includes('embaraz') || q.includes('embarazo') || q.includes('matern') || q.includes('obstetr') || q.includes('bebe')) {
+    return `👶 **Servicio Materno Infantil y Parto Humanizado:**\n\n• Atención 24/7 para gestantes y partos sin necesidad de viajar a Esmeraldas.\n• Sala de parto humanizado e intercultural con libertad de posición (vertical, cuclillas o cama tradicional).\n• Monitoreo fetal, sala de recién nacidos, alojamiento conjunto y apoyo en lactancia materna exclusiva.`;
+  }
+
+  if (q.includes('vacuna') || q.includes('inmuniz') || q.includes('vacunatorio')) {
+    return `💉 **Servicio de Vacunación (Inmunizaciones):**\n\n• Horario: Lunes a Viernes de 08:00 a 16:00.\n• Aplicamos gratuitamente todas las vacunas del Esquema Nacional MSP (BCG, Rotavirus, Pentavalente, Neumococo, Fiebre Amarilla, Influenza, COVID-19 y refuerzos para adultos mayores y gestantes).\n• Requisito: Presentar carnet de vacunación y cédula.`;
+  }
+
+  return `¡Hola! Soy el **Asistente Virtual con IA del Centro de Salud Tipo C Rioverde** 🌿.\n\nPuedo orientarte con gusto sobre:\n• 🕒 **Horarios de atención** y emergencias 24/7.\n• 🏥 **Servicios y especialidades** médicas disponibles.\n• 📅 **Cómo solicitar citas médicas** o acceder a farmacia gratuita.\n• 🧪 **Consulta de exámenes de laboratorio** en línea.\n• 📍 **Ubicación y requisitos** de ingreso.\n\n¿Qué consulta tienes hoy para nosotros?`;
+}
+
+// AI Assistant Chat endpoint (Gemini API server-side integration)
+app.post('/api/chat', express.json(), async (req, res) => {
+  try {
+    const { messages, message } = req.body;
+    const userPrompt = message || (Array.isArray(messages) && messages.length > 0 ? messages[messages.length - 1].content : '');
+
+    if (!userPrompt || typeof userPrompt !== 'string') {
+      return res.status(400).json({ error: 'Mensaje requerido' });
+    }
+
+    // Try Gemini API call if GEMINI_API_KEY is available in the environment
+    if (process.env.GEMINI_API_KEY) {
+      try {
+        const systemInstruction = `Eres "SaludBot Rioverde", el asistente virtual oficial con inteligencia artificial del Centro de Salud Tipo C Rioverde (CSTCR), ubicado en el Cantón Rioverde, Provincia de Esmeraldas, Ecuador.
+Tu misión es orientar con amabilidad, calidez, respeto y claridad a los pacientes y familias de Rioverde, Rocafuerte, Montalvo, Lagarto, Chontaduro, Chumundé y comunidades de la costa sobre los servicios de salud y horarios de atención.
+
+INFORMACIÓN OFICIAL DEL CENTRO DE SALUD TIPO C RIOVERDE:
+1. Gratuidad Total: Todos los servicios médicos, medicamentos de farmacia, partos y exámenes de laboratorio son 100% GRATUITOS bajo el sistema de salud pública del Ecuador (MSP).
+2. Horarios de Atención:
+   - Emergencias: Atención médica continua 24 horas al día, los 7 días de la semana (24/7). Triage y sala de choque siempre activos.
+   - Consulta Externa: Lunes a Viernes de 07:00 a 19:00 en dos jornadas (matutina y vespertina).
+   - Laboratorio Clínico: Toma de muestras de Lunes a Viernes de 07:00 a 10:00 (emergencias procesadas 24/7). Los resultados se pueden consultar y descargar en línea en el portal de laboratorio web.
+   - Farmacia Institucional: 24/7 para pacientes de emergencia; Lunes a Viernes de 07:00 a 19:00 para consulta externa.
+   - Rehabilitación Física: Lunes a Viernes de 08:00 a 16:30.
+   - Vacunación (Inmunización): Lunes a Viernes de 08:00 a 16:00 (esquema nacional infantil, gestantes y adultos).
+3. Servicios Disponibles:
+   - Medicina Familiar y Medicina General.
+   - Sala de Parto Humanizado e Intercultural y Área Materno Infantil.
+   - Pediatría y Control del Niño Sano.
+   - Odontología General y Prevención Oral.
+   - Rayos X y Ecografía / Imagenología.
+   - Laboratorio Clínico automatizado.
+   - Rehabilitación Física y Terapia de Movilidad.
+   - Psicología Clínica y Salud Mental.
+   - Nutrición y Dietética.
+   - Clubes de Adultos Mayores y Pacientes con Enfermedades Crónicas (Hipertensión, Diabetes).
+4. Citas Médicas:
+   - Se agendan a través de WhatsApp oficial: +593 96 117 1171 (096 117 1171) o en ventanilla de Admisión de Lunes a Viernes de 07:00 a 16:00.
+   - Las emergencias NO requieren cita previa, se atienden de inmediato por orden de triage.
+5. Requisitos: Presentar cédula de identidad ecuatoriana o partida de nacimiento / pasaporte. En emergencias vitales la atención es inmediata sin ningún condicionamiento previo.
+6. Ubicación: Cantón Rioverde, Carretero Principal Vía a la Costa (frente a la cancha deportiva del GAD Rioverde), Esmeraldas.
+
+REGLAS DE RESPUESTA:
+- Responde siempre en español con tono cálido, empático, claro y respetuoso.
+- Sé conciso y directo, utilizando viñetas o párrafos breves fáciles de leer desde un teléfono móvil.
+- Si el usuario presenta una urgencia médica grave (dolor en el pecho severo, dificultad respiratoria extrema, sangrado abundante o pérdida de conciencia), recomiéndale enfáticamente acudir de inmediato a la sala de Emergencias 24h.
+- Aclara que eres un asistente orientador informativo y no reemplazas el diagnóstico de un médico presencial.`;
+
+        const formattedContents = [];
+        if (Array.isArray(messages)) {
+          for (const m of messages.slice(-6)) {
+            const role = m.sender === 'user' || m.role === 'user' ? 'user' : 'model';
+            const textContent = m.text || m.content || '';
+            if (textContent.trim()) {
+              formattedContents.push({
+                role,
+                parts: [{ text: textContent }],
+              });
+            }
+          }
+        }
+
+        if (formattedContents.length === 0 || formattedContents[formattedContents.length - 1].role !== 'user') {
+          formattedContents.push({
+            role: 'user',
+            parts: [{ text: userPrompt }],
+          });
+        }
+
+        const response = await ai.models.generateContent({
+          model: 'gemini-3.8-flash',
+          contents: formattedContents,
+          config: {
+            systemInstruction,
+            temperature: 0.4,
+            maxOutputTokens: 600,
+          },
+        });
+
+        const reply = response.text || '';
+        if (reply.trim()) {
+          return res.json({ reply, model: 'gemini-3.8-flash' });
+        }
+      } catch (geminiError: any) {
+        console.warn('Gemini API call failed, using knowledge fallback:', geminiError?.message || geminiError);
+      }
+    }
+
+    // Knowledge-based fallback if API key is not present or transient error
+    const fallbackReply = generateKnowledgeFallback(userPrompt);
+    return res.json({ reply: fallbackReply, model: 'knowledge-base' });
+  } catch (err: any) {
+    console.error('Error in /api/chat:', err);
+    res.status(500).json({ error: 'Error procesando tu consulta' });
+  }
 });
 
 // Handle lab proxy requests

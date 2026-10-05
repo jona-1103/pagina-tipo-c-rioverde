@@ -3,118 +3,207 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   FlaskConical, 
+  Waves,
   ShieldCheck, 
-  CheckCircle2, 
-  ArrowRight, 
-  Info, 
-  Shield, 
-  KeyRound,
-  ExternalLink
+  KeyRound, 
+  ExternalLink,
+  ChevronRight,
+  FileScan,
+  CheckCircle2,
+  Activity,
+  ArrowRight,
+  Shield
 } from 'lucide-react';
-import { DOCTOR_RESULTS_IMAGE } from '../data';
+import { DOCTOR_RESULTS_IMAGE, ECOGRAFIA_IMAGE } from '../data';
+import EcografiaModal from './EcografiaModal';
 
 export default function LaboratoryWidget() {
-  const handleOpenPortal = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const [isEcografiaModalOpen, setIsEcografiaModalOpen] = useState(false);
+
+  const handleOpenLabPortal = (e: React.MouseEvent) => {
     e.preventDefault();
     const targetUrl = 'https://laboratorio.tipocrioverde.com/';
     
     // Check if running inside an iframe
-    const isFramed = window.self !== window.top;
+    const isFramed = typeof window !== 'undefined' && window.self !== window.top;
 
     if (isFramed) {
       try {
-        // Attempt top-level navigation to avoid X-Frame-Options rejection
         window.top!.location.href = targetUrl;
       } catch {
-        // If iframe sandbox prevents top navigation, open in direct clean window
         window.open(targetUrl, '_blank', 'noopener,noreferrer');
       }
     } else {
-      // Direct navigation in the same browser window/tab
       window.location.href = targetUrl;
     }
   };
 
   return (
-    <section className="pt-2 pb-6 bg-white" id="seccion-resultados-laboratorio">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* LIGHT GREEN GRADIENT BANNER PANEL */}
-        <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-100 rounded-3xl overflow-hidden shadow-sm border border-emerald-100 grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[460px]">
+    <>
+      <section className="pt-8 pb-10 bg-white" id="seccion-resultados-laboratorio">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Doctor on the left */}
-          <div className="lg:col-span-5 relative min-h-[250px] lg:min-h-full overflow-hidden">
-            <img
-              src={DOCTOR_RESULTS_IMAGE}
-              alt="Doctora mostrando resultados de laboratorio digitales"
-              className="absolute inset-0 w-full h-full object-cover object-center translate-x-1 hover:scale-105 transition-transform duration-500"
-              referrerPolicy="no-referrer"
-            />
-            {/* Soft overlay gradient to melt doctor image with layout */}
-            <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-emerald-950/20 via-transparent to-transparent"></div>
-          </div>
-
-          {/* Interactive checking system on the right */}
-          <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-center space-y-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-emerald-800 tracking-wider bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200 inline-flex items-center gap-1.5">
-                  <Shield className="w-3.5 h-3.5 text-emerald-700" />
-                  SISTEMA OFICIAL DE LABORATORIO
-                </span>
-                <span className="text-[11px] font-mono text-emerald-800/80 bg-emerald-200/50 px-2 py-0.5 rounded-md border border-emerald-300/40">
-                  MSP ECUADOR
-                </span>
-              </div>
-              
-              <h3 className="font-sans font-extrabold text-2xl sm:text-3xl text-emerald-950 tracking-tight">
-                Consulta los resultados de laboratorio
-              </h3>
-              <p className="text-sm text-gray-650 max-w-xl leading-relaxed">
-                Acceda directamente al portal institucional de resultados del <strong>Centro de Salud Tipo C Rioverde</strong> para consultar, verificar y descargar sus exámenes y análisis clínicos.
-              </p>
-            </div>
-
-            {/* Information security badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-lg text-xs text-emerald-900">
-              <div className="flex items-center gap-2 bg-white/80 border border-emerald-200/80 px-3 py-2 rounded-xl">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="font-medium">Conexión directa y confidencial</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/80 border border-emerald-200/80 px-3 py-2 rounded-xl">
-                <KeyRound className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="font-medium">Acceso con cédula y contraseña</span>
-              </div>
-            </div>
-
-            {/* Action Button to https://laboratorio.tipocrioverde.com/ */}
-            <div className="flex flex-col sm:flex-row gap-3 max-w-lg pt-1">
-              <a
-                href="https://laboratorio.tipocrioverde.com/"
-                target="_top"
-                onClick={handleOpenPortal}
-                className="px-8 py-4 bg-emerald-800 hover:bg-emerald-950 active:scale-[0.99] text-white font-bold rounded-xl text-sm transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-md shadow-emerald-900/20 w-full sm:w-auto text-center text-decoration-none"
-                id="btn-consultar-resultados-lab"
-              >
-                <FlaskConical className="w-5 h-5 text-emerald-100" />
-                <span>Consultar Resultados</span>
-                <ArrowRight className="w-4 h-4 text-emerald-200" />
-              </a>
-            </div>
-
-            {/* Help instructions note */}
-            <p className="text-xs text-gray-500 flex items-center gap-1.5 pt-1">
-              <Info className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-              <span>Para ingresar digite su número de cédula o usuario y la contraseña facilitada en el laboratorio.</span>
+          {/* Section Header styled identically to "Actualidad en salud" */}
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
+            <span className="text-xs font-bold text-emerald-700 tracking-widest uppercase font-mono bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 inline-block">
+              SERVICIOS DE DIAGNÓSTICO DIGITAL
+            </span>
+            <h3 className="font-sans font-black text-3xl sm:text-4xl text-emerald-950 tracking-tight leading-none">
+              Consulta de exámenes médicos
+            </h3>
+            <div className="w-12 h-1 bg-emerald-500 mx-auto rounded"></div>
+            <p className="text-xs sm:text-sm text-gray-500 leading-relaxed pt-1">
+              Consulte, verifique y descargue de forma inmediata y confidencial sus resultados clínicos de laboratorio e informes de ecografía del Centro de Salud Tipo C Rioverde.
             </p>
+          </div>
+
+          {/* 2 HORIZONTAL-STYLED RESPONSIVE GRID CARDS (ONE NEXT TO THE OTHER LIKE ACTUALIDAD EN SALUD) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto items-stretch">
+            
+            {/* CARD 1: CONSULTA DE RESULTADOS DE LABORATORIO */}
+            <div
+              className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-emerald-200 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group text-left"
+              id="card-consulta-laboratorio"
+            >
+              <div>
+                {/* Post/Card image */}
+                <div className="relative h-56 sm:h-64 overflow-hidden bg-slate-100 shrink-0">
+                  <img
+                    src={DOCTOR_RESULTS_IMAGE}
+                    alt="Consulta de resultados de laboratorio clínico"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/60 via-transparent to-transparent"></div>
+                  
+                  {/* Category overlay */}
+                  <span className="absolute top-3 left-3 text-[10px] font-bold tracking-wider text-emerald-950 bg-white px-3 py-1 rounded-full uppercase shadow-sm flex items-center gap-1.5">
+                    <FlaskConical className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Laboratorio Clínico</span>
+                  </span>
+
+                  <span className="absolute bottom-3 left-4 text-xs font-semibold text-white drop-shadow-sm">
+                    MSP Ecuador · Análisis Automatizados
+                  </span>
+                </div>
+
+                {/* Card detail contents */}
+                <div className="p-6 sm:p-7 space-y-3">
+                  <h4 className="font-sans font-bold text-lg sm:text-xl text-emerald-950 group-hover:text-emerald-700 transition-colors leading-snug">
+                    Consulta de Resultados de Laboratorio
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
+                    Acceda al portal institucional para consultar y descargar sus exámenes de sangre, química clínica, coprológicos y uroanálisis con entrega inmediata.
+                  </p>
+
+                  {/* Micro-features list */}
+                  <div className="pt-2 space-y-2 text-xs text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>Conexión cifrada directa con cédula y contraseña</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>Descarga de informes oficiales firmados digitalmente</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action button footer */}
+              <div className="p-6 pt-0 border-t border-gray-50 mt-4">
+                <a
+                  href="https://laboratorio.tipocrioverde.com/"
+                  target="_top"
+                  onClick={handleOpenLabPortal}
+                  className="w-full py-3.5 px-5 bg-emerald-800 hover:bg-emerald-900 active:scale-98 text-white font-bold rounded-xl text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-sm group-hover:shadow-md"
+                  id="btn-acceder-laboratorio"
+                >
+                  <FlaskConical className="w-4 h-4 text-emerald-200" />
+                  <span>Consultar Resultados de Laboratorio</span>
+                  <ArrowRight className="w-4 h-4 text-emerald-200 ml-1 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </div>
+
+            {/* CARD 2: CONSULTA DE EXÁMENES DE ECOGRAFÍA */}
+            <div
+              className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-emerald-200 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group text-left"
+              id="seccion-consulta-ecografia"
+            >
+              <div>
+                {/* Post/Card image */}
+                <div className="relative h-56 sm:h-64 overflow-hidden bg-slate-100 shrink-0">
+                  <img
+                    src={ECOGRAFIA_IMAGE}
+                    alt="Especialista realizando ecografía médica digital"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/60 via-transparent to-transparent"></div>
+                  
+                  {/* Category overlay */}
+                  <span className="absolute top-3 left-3 text-[10px] font-bold tracking-wider text-emerald-950 bg-white px-3 py-1 rounded-full uppercase shadow-sm flex items-center gap-1.5">
+                    <Waves className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Imagenología y Ecografía</span>
+                  </span>
+
+                  <span className="absolute bottom-3 left-4 text-xs font-semibold text-white drop-shadow-sm">
+                    MSP Ecuador · Ultrasonido 2D/3D
+                  </span>
+                </div>
+
+                {/* Card detail contents */}
+                <div className="p-6 sm:p-7 space-y-3">
+                  <h4 className="font-sans font-bold text-lg sm:text-xl text-emerald-950 group-hover:text-emerald-700 transition-colors leading-snug">
+                    Consulta de Exámenes de Ecografía
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
+                    Visualice y descargue los informes médicos de ecografías obstétricas (embarazo), abdominales, pélvicas y renales con biometría completa y conclusiones.
+                  </p>
+
+                  {/* Micro-features list */}
+                  <div className="pt-2 space-y-2 text-xs text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <FileScan className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>Firma electrónica certificada del médico imagenólogo</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>Consulta rápida con número de cédula o código de orden</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action button footer */}
+              <div className="p-6 pt-0 border-t border-gray-50 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsEcografiaModalOpen(true)}
+                  className="w-full py-3.5 px-5 bg-emerald-800 hover:bg-emerald-900 active:scale-98 text-white font-bold rounded-xl text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-sm group-hover:shadow-md"
+                  id="btn-acceder-ecografia"
+                >
+                  <Waves className="w-4 h-4 text-emerald-200" />
+                  <span>Consultar Exámenes de Ecografía</span>
+                  <ArrowRight className="w-4 h-4 text-emerald-200 ml-1 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </div>
 
           </div>
-        </div>
 
-      </div>
-    </section>
+        </div>
+      </section>
+
+      {/* Ecografia Consultation Modal */}
+      <EcografiaModal
+        isOpen={isEcografiaModalOpen}
+        onClose={() => setIsEcografiaModalOpen(false)}
+      />
+    </>
   );
 }

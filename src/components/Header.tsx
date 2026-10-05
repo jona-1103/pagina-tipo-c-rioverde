@@ -5,13 +5,27 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, HeartPulse, Sparkles, PhoneCall, Calendar } from 'lucide-react';
+import { Menu, X, HeartPulse, Sparkles, PhoneCall, Calendar, ExternalLink } from 'lucide-react';
 
 interface HeaderProps {
   onOpenAppointment: () => void;
   currentPage: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto';
   onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => void;
 }
+
+interface MenuItemInternal {
+  label: string;
+  pageId: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto';
+  href?: never;
+}
+
+interface MenuItemExternal {
+  label: string;
+  href: string;
+  pageId?: never;
+}
+
+type MenuItem = MenuItemInternal | MenuItemExternal;
 
 export default function Header({ onOpenAppointment, currentPage, onNavigate }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,12 +45,13 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuItems = [
-    { label: 'Inicio', pageId: 'inicio' as const },
-    { label: 'Servicios', pageId: 'servicios' as const },
-    { label: 'Acerca de Nosotros', pageId: 'nosotros' as const },
-    { label: 'Descargas', pageId: 'descargas' as const },
-    { label: 'Contacto', pageId: 'contacto' as const },
+  const menuItems: MenuItem[] = [
+    { label: 'Inicio', pageId: 'inicio' },
+    { label: 'Servicios', pageId: 'servicios' },
+    { label: 'Agendamiento Tipo C', href: 'https://agendamiento.tipocrioverde.com/' },
+    { label: 'Acerca de Nosotros', pageId: 'nosotros' },
+    { label: 'Descargas', pageId: 'descargas' },
+    { label: 'Contacto', pageId: 'contacto' },
   ];
 
   const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => {
@@ -69,7 +84,7 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
               <div className="p-1.5 bg-emerald-500 text-white rounded-lg group-hover:scale-105 transition-transform">
                 <HeartPulse className="w-5 h-5 text-white" />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col text-left">
                 <span className={`font-sans font-black text-xs sm:text-[13px] tracking-tight leading-none uppercase ${
                   isScrolled ? 'text-emerald-950' : 'text-white'
                 }`}>
@@ -92,50 +107,93 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
               }`} 
               id="header-desktop-nav"
             >
-              {menuItems.map((item, idx) => (
-                <motion.a
-                  key={item.label}
-                  onMouseEnter={() => setHoveredIndex(idx)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  whileTap={{ scale: 0.95 }}
-                  href="#"
-                  onClick={(e) => handleLinkClick(e, item.pageId)}
-                  className="relative px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer inline-flex items-center justify-center z-10"
-                  style={{
-                    color: isScrolled
-                      ? (hoveredIndex === idx ? '#ffffff' : '#044e37')
-                      : '#ffffff',
-                    fontWeight: currentPage === item.pageId ? '900' : '700'
-                  }}
-                >
-                  {(hoveredIndex === idx || currentPage === item.pageId) && (
-                    <motion.div
-                      layoutId="headerBubble"
-                      className={`absolute inset-0 rounded-full -z-10 shadow ${
-                        currentPage === item.pageId 
-                          ? 'bg-emerald-800' 
-                          : isScrolled ? 'bg-emerald-600' : 'bg-emerald-700'
+              {menuItems.map((item, idx) => {
+                if (item.href) {
+                  return (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={() => setHoveredIndex(idx)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      className={`relative px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer inline-flex items-center gap-1 justify-center z-10 ${
+                        isScrolled
+                          ? 'text-emerald-800 hover:text-emerald-950'
+                          : 'text-emerald-200 hover:text-white'
                       }`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-                    />
-                  )}
-                  {item.label}
-                </motion.a>
-              ))}
+                      title="Abrir plataforma oficial de agendamiento"
+                    >
+                      <span>{item.label}</span>
+                      <ExternalLink className="w-3 h-3 opacity-70" />
+                    </a>
+                  );
+                }
+
+                return (
+                  <motion.a
+                    key={item.label}
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    whileTap={{ scale: 0.95 }}
+                    href="#"
+                    onClick={(e) => handleLinkClick(e, item.pageId)}
+                    className="relative px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer inline-flex items-center justify-center z-10"
+                    style={{
+                      color: isScrolled
+                        ? (hoveredIndex === idx ? '#ffffff' : '#044e37')
+                        : '#ffffff',
+                      fontWeight: currentPage === item.pageId ? '900' : '700'
+                    }}
+                  >
+                    {(hoveredIndex === idx || currentPage === item.pageId) && (
+                      <motion.div
+                        layoutId="headerBubble"
+                        className={`absolute inset-0 rounded-full -z-10 shadow ${
+                          currentPage === item.pageId 
+                            ? 'bg-emerald-800' 
+                            : isScrolled ? 'bg-emerald-600' : 'bg-emerald-700'
+                        }`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+                      />
+                    )}
+                    {item.label}
+                  </motion.a>
+                );
+              })}
             </nav>
 
-            {/* CALL TO ACTION BUTTON */}
-            <div className="hidden sm:flex items-center gap-3" id="header-actions">
+            {/* CALL TO ACTION BUTTONS */}
+            <div className="hidden sm:flex items-center gap-2.5" id="header-actions">
+              {/* AGENDAMIENTO TIPO C BUTTON (Direct link to https://agendamiento.tipocrioverde.com/) */}
+              <a
+                href="https://agendamiento.tipocrioverde.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`px-3.5 py-2 font-bold rounded-xl text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-sm ${
+                  isScrolled
+                    ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
+                    : 'bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-400/40'
+                }`}
+                title="Ir al sistema de Agendamiento Tipo C Rioverde"
+                id="header-btn-agendamiento"
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Agendamiento Tipo C</span>
+                <ExternalLink className="w-3 h-3 opacity-80" />
+              </a>
+
               <button
                 onClick={onOpenAppointment}
-                className="px-4.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-sm shadow-emerald-800/10 cursor-pointer"
+                className="px-3 py-2 bg-emerald-900/60 hover:bg-emerald-800 text-emerald-100 hover:text-white font-semibold rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 border border-emerald-700/50 cursor-pointer"
                 id="header-cta-appointment"
+                title="Atención directa por WhatsApp oficial"
               >
-                <Calendar className="w-4 h-4" />
-                Agenda tu cita
+                <PhoneCall className="w-3 h-3 text-emerald-400" />
+                <span>WhatsApp</span>
               </button>
             </div>
 
@@ -148,6 +206,7 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
                 color: isScrolled ? '#022c22' : '#ffffff'
               }}
               id="header-mobile-trigger"
+              aria-label="Abrir menú de navegación"
             >
               {mobileMenuOpen ? <X className="w-5.5 h-5.5" /> : <Menu className="w-5.5 h-5.5" />}
             </button>
@@ -163,7 +222,7 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-30 lg:hidden bg-slate-900/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 lg:hidden bg-slate-900/80 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           >
             <motion.div
@@ -171,7 +230,7 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-4/5 max-w-sm bg-white p-6 shadow-2xl flex flex-col justify-between"
+              className="absolute right-0 top-0 bottom-0 w-4/5 max-w-sm bg-white p-6 shadow-2xl flex flex-col justify-between text-left"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="space-y-6">
@@ -185,46 +244,80 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
                   </div>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 rounded-full bg-gray-100 text-gray-500 hover:text-gray-900"
+                    className="p-1 rounded-full bg-gray-100 text-gray-500 hover:text-gray-900 cursor-pointer"
+                    aria-label="Cerrar menú móvil"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
 
                 {/* Mobile Links list */}
-                <nav className="flex flex-col gap-3">
-                  {menuItems.map((item) => (
-                    <a
-                      key={item.label}
-                      href="#"
-                      onClick={(e) => handleLinkClick(e, item.pageId)}
-                      className={`px-3 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-between ${
-                        currentPage === item.pageId
-                          ? 'bg-emerald-600 text-white font-black'
-                          : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-900'
-                      }`}
-                    >
-                      {item.label}
-                      <span className={`${currentPage === item.pageId ? 'text-white' : 'text-gray-300'} font-mono text-[10px]`}>&gt;</span>
-                    </a>
-                  ))}
+                <nav className="flex flex-col gap-2.5">
+                  {menuItems.map((item) => {
+                    if (item.href) {
+                      return (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="px-3 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-between bg-emerald-50 text-emerald-900 border border-emerald-200"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-emerald-700" />
+                            <span>{item.label}</span>
+                          </div>
+                          <ExternalLink className="w-3.5 h-3.5 text-emerald-600" />
+                        </a>
+                      );
+                    }
+
+                    return (
+                      <a
+                        key={item.label}
+                        href="#"
+                        onClick={(e) => handleLinkClick(e, item.pageId)}
+                        className={`px-3 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-between ${
+                          currentPage === item.pageId
+                            ? 'bg-emerald-700 text-white font-black'
+                            : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-900'
+                        }`}
+                      >
+                        {item.label}
+                        <span className={`${currentPage === item.pageId ? 'text-white' : 'text-gray-300'} font-mono text-[10px]`}>&gt;</span>
+                      </a>
+                    );
+                  })}
                 </nav>
               </div>
 
               {/* Mobile CTA */}
               <div className="pt-6 border-t border-gray-100 space-y-3">
+                <a
+                  href="https://agendamiento.tipocrioverde.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-700/20"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Agendamiento Tipo C</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
                     onOpenAppointment();
                   }}
-                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/10 cursor-pointer"
+                  className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <Calendar className="w-4 h-4" />
-                  Agenda tu cita
+                  <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>WhatsApp Citas</span>
                 </button>
                 <div className="flex justify-center text-[10px] text-gray-400 font-mono">
-                  MSP ATENCIÓN GRATUITA S EN ECUADOR
+                  MSP ATENCIÓN GRATUITA EN ECUADOR
                 </div>
               </div>
             </motion.div>
@@ -234,3 +327,4 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
     </>
   );
 }
+

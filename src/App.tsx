@@ -17,6 +17,7 @@ import Ubicacion from './components/Ubicacion';
 import Footer from './components/Footer';
 import AppointmentModal from './components/AppointmentModal';
 import DownloadsModal from './components/DownloadsModal';
+import AIAssistantWidget from './components/AIAssistantWidget';
 
 // PAGE VIEWS
 import ServiciosPage from './components/ServiciosPage';
@@ -96,7 +97,7 @@ export default function App() {
               {/* TEASER INSTITUTIONAL: ACERCA DE NOSOTROS */}
               <AcercaDeNosotros onNavigateToAbout={() => handlePageNavigation('nosotros')} />
 
-              {/* RESULTADOS DE LABORATORIO */}
+              {/* CONSULTAS EN LÍNEA: LABORATORIO Y ECOGRAFÍA */}
               <LaboratoryWidget />
 
               {/* ESTADÍSTICAS */}
@@ -172,6 +173,8 @@ export default function App() {
       />
 
       {/* FLOATING ACTION OVERLAYS (MODALS) */}
+      <AIAssistantWidget />
+
       <AppointmentModal
         isOpen={isAppointmentOpen}
         onClose={handleCloseAppointment}

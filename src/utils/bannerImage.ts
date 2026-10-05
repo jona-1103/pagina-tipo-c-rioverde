@@ -6,14 +6,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { HERO_IMAGE } from '../data';
 
-const PRIMARY_KEY = 'rioverde_fachada_banner_url_v2';
+const PRIMARY_KEY = 'rioverde_fachada_banner_url_v3';
 const FALLBACK_KEYS = [
-  'rioverde_fachada_banner_url_v2',
-  'rioverde_fachada_banner_url',
-  'rioverde_banner_image',
-  'rioverde_fachada_banner',
-  'custom_banner_url',
-  'hero_banner_image',
+  'rioverde_fachada_banner_url_v3',
 ];
 const BANNER_EVENT = 'rioverde:banner_updated';
 
@@ -35,21 +30,6 @@ export function getStoredBanner(): string {
     if (stored && (stored.startsWith('data:image/') || stored.startsWith('/'))) {
       return stored;
     }
-  }
-
-  // Scan localStorage for any base64 image key
-  try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k && (k.includes('banner') || k.includes('fachada') || k.includes('rioverde'))) {
-        const val = localStorage.getItem(k);
-        if (val && val.startsWith('data:image/')) {
-          return val;
-        }
-      }
-    }
-  } catch (e) {
-    // Ignore storage errors
   }
 
   return HERO_IMAGE;

@@ -115,6 +115,25 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
               </li>
               <li>
                 <a
+                  href="https://agendamiento.tipocrioverde.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white hover:underline transition-all cursor-pointer text-emerald-300 font-bold flex items-center gap-1.5"
+                >
+                  <span>Agendamiento Tipo C</span>
+                  <ExternalLink className="w-3 h-3 opacity-75" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#seccion-consulta-ecografia"
+                  className="hover:text-white hover:underline transition-all cursor-pointer text-emerald-200/90 flex items-center gap-1.5"
+                >
+                  <span>Consulta de Ecografías</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="#"
                   onClick={(e) => handleLinkClick(e, 'nosotros')}
                   className="hover:text-white hover:underline transition-all cursor-pointer"

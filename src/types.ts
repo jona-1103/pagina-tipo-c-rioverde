@@ -74,6 +74,78 @@ export interface Testimonial {
   text: string;
   rating: number;
   location?: string;
+  service?: string;
   date: string;
+}
+
+// Patient Portal Types
+export interface VaccineRecord {
+  id: string;
+  vaccineName: string;
+  targetDisease: string;
+  dose: string;
+  appliedDate: string;
+  batchNumber: string;
+  facility: string;
+  status: 'Aplicada' | 'Próxima' | 'Refuerzo Pendiente';
+  nextDose?: string;
+}
+
+export interface MedicalConsultation {
+  id: string;
+  date: string;
+  specialty: string;
+  doctorName: string;
+  reason: string;
+  vitalSigns: {
+    bloodPressure?: string;
+    heartRate?: string;
+    temperature?: string;
+    weight?: string;
+    height?: string;
+    bmi?: string;
+  };
+  diagnosisCie10: string;
+  notes: string;
+  treatmentPlan: string;
+}
+
+export interface PatientPrescription {
+  id: string;
+  medication: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  prescribedDate: string;
+  dispensedStatus: 'Entregado en Farmacia MSP' | 'Por retirar' | 'Completado';
+}
+
+export interface PatientAppointment {
+  id: string;
+  date: string;
+  timeSlot: string;
+  specialty: string;
+  doctorName: string;
+  room: string;
+  status: 'Confirmada' | 'Realizada' | 'Reprogramada';
+}
+
+export interface PatientProfile {
+  id: string;
+  dni: string;
+  fullName: string;
+  birthDate: string;
+  age: number;
+  gender: string;
+  bloodType: string;
+  allergies: string;
+  parish: string;
+  phone: string;
+  hcuNumber: string;
+  emergencyContact: string;
+  vaccines: VaccineRecord[];
+  consultations: MedicalConsultation[];
+  prescriptions: PatientPrescription[];
+  appointments: PatientAppointment[];
 }
 

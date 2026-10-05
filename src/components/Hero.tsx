@@ -7,7 +7,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Camera, Check, Upload, Globe, Download, Info } from 'lucide-react';
 import { useBannerImage } from '../utils/bannerImage';
-import defaultFallbackImg from '../assets/images/fachada_oficial_rioverde_1790272293009.jpg';
+import { HERO_IMAGE } from '../data';
+import defaultFallbackImg from '../assets/images/fachada_principal_tipo_c_rioverde.png';
 
 interface HeroProps {
   onOpenAppointment: () => void;
@@ -128,7 +129,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       {/* Background Image of the Modern Health Center Facade */}
       <div className="absolute inset-0 w-full h-full">
         <img
-          src={heroImage || '/images/banner-rioverde.png'}
+          src={heroImage || HERO_IMAGE}
           alt="Fachada Principal Centro de Salud Tipo C Rioverde"
           className="w-full h-full object-cover object-center md:object-[center_35%] transition-transform duration-700 ease-out"
           referrerPolicy="no-referrer"
