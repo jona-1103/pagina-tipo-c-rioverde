@@ -16,13 +16,11 @@ import Blog from './components/Blog';
 import Ubicacion from './components/Ubicacion';
 import Footer from './components/Footer';
 import AppointmentModal from './components/AppointmentModal';
-import DownloadsModal from './components/DownloadsModal';
 import AIAssistantWidget from './components/AIAssistantWidget';
 
 // PAGE VIEWS
 import ServiciosPage from './components/ServiciosPage';
 import AcercaPage from './components/AcercaPage';
-import DescargasPage from './components/DescargasPage';
 import ContactoPage from './components/ContactoPage';
 import SecureClinicalPortal from './components/SecureClinicalPortal';
 
@@ -34,10 +32,8 @@ export default function App() {
     return <SecureClinicalPortal />;
   }
 
-  const [currentPage, setCurrentPage] = useState<'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto'>('inicio');
+  const [currentPage, setCurrentPage] = useState<'inicio' | 'servicios' | 'nosotros' | 'contacto'>('inicio');
   const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
-  const [isDownloadsOpen, setIsDownloadsOpen] = useState(false);
-  const [downloadsTab, setDownloadsTab] = useState<'descargas' | 'manuales'>('descargas');
   const [preselectedSpecialty, setPreselectedSpecialty] = useState<string | undefined>(undefined);
 
   const handleOpenAppointment = (specialtyId?: string) => {
@@ -49,12 +45,7 @@ export default function App() {
     setPreselectedSpecialty(undefined);
   };
 
-  const handleOpenDownloads = (tab: 'descargas' | 'manuales') => {
-    setDownloadsTab(tab);
-    setIsDownloadsOpen(true);
-  };
-
-  const handlePageNavigation = (page: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => {
+  const handlePageNavigation = (page: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => {
     setCurrentPage(page);
     window.scrollTo({ top: 0 });
   };
@@ -137,19 +128,6 @@ export default function App() {
             </motion.div>
           )}
 
-          {currentPage === 'descargas' && (
-            <motion.div
-              key="descargas-page"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35 }}
-              className="w-full"
-            >
-              <DescargasPage />
-            </motion.div>
-          )}
-
           {currentPage === 'contacto' && (
             <motion.div
               key="contacto-page"
@@ -179,12 +157,6 @@ export default function App() {
         isOpen={isAppointmentOpen}
         onClose={handleCloseAppointment}
         initialSpecialtyId={preselectedSpecialty}
-      />
-
-      <DownloadsModal
-        isOpen={isDownloadsOpen}
-        onClose={() => setIsDownloadsOpen(false)}
-        initialTab={downloadsTab}
       />
 
     </div>

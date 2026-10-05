@@ -9,23 +9,9 @@ import { Menu, X, HeartPulse, Sparkles, PhoneCall, Calendar, ExternalLink } from
 
 interface HeaderProps {
   onOpenAppointment: () => void;
-  currentPage: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto';
-  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => void;
+  currentPage: 'inicio' | 'servicios' | 'nosotros' | 'contacto';
+  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => void;
 }
-
-interface MenuItemInternal {
-  label: string;
-  pageId: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto';
-  href?: never;
-}
-
-interface MenuItemExternal {
-  label: string;
-  href: string;
-  pageId?: never;
-}
-
-type MenuItem = MenuItemInternal | MenuItemExternal;
 
 export default function Header({ onOpenAppointment, currentPage, onNavigate }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,16 +31,14 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuItems: MenuItem[] = [
-    { label: 'Inicio', pageId: 'inicio' },
-    { label: 'Servicios', pageId: 'servicios' },
-    { label: 'Agendamiento Tipo C', href: 'https://agendamiento.tipocrioverde.com/' },
-    { label: 'Acerca de Nosotros', pageId: 'nosotros' },
-    { label: 'Descargas', pageId: 'descargas' },
-    { label: 'Contacto', pageId: 'contacto' },
+  const menuItems = [
+    { label: 'Inicio', pageId: 'inicio' as const },
+    { label: 'Servicios', pageId: 'servicios' as const },
+    { label: 'Acerca de Nosotros', pageId: 'nosotros' as const },
+    { label: 'Contacto', pageId: 'contacto' as const },
   ];
 
-  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => {
+  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => {
     e.preventDefault();
     setMobileMenuOpen(false);
     onNavigate(pageId);
@@ -107,63 +91,39 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
               }`} 
               id="header-desktop-nav"
             >
-              {menuItems.map((item, idx) => {
-                if (item.href) {
-                  return (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onMouseEnter={() => setHoveredIndex(idx)}
-                      onMouseLeave={() => setHoveredIndex(null)}
-                      className={`relative px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer inline-flex items-center gap-1 justify-center z-10 ${
-                        isScrolled
-                          ? 'text-emerald-800 hover:text-emerald-950'
-                          : 'text-emerald-200 hover:text-white'
+              {menuItems.map((item, idx) => (
+                <motion.a
+                  key={item.label}
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  whileTap={{ scale: 0.95 }}
+                  href="#"
+                  onClick={(e) => handleLinkClick(e, item.pageId)}
+                  className="relative px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer inline-flex items-center justify-center z-10"
+                  style={{
+                    color: isScrolled
+                      ? (hoveredIndex === idx ? '#ffffff' : '#044e37')
+                      : '#ffffff',
+                    fontWeight: currentPage === item.pageId ? '900' : '700'
+                  }}
+                >
+                  {(hoveredIndex === idx || currentPage === item.pageId) && (
+                    <motion.div
+                      layoutId="headerBubble"
+                      className={`absolute inset-0 rounded-full -z-10 shadow ${
+                        currentPage === item.pageId 
+                          ? 'bg-emerald-800' 
+                          : isScrolled ? 'bg-emerald-600' : 'bg-emerald-700'
                       }`}
-                      title="Abrir plataforma oficial de agendamiento"
-                    >
-                      <span>{item.label}</span>
-                      <ExternalLink className="w-3 h-3 opacity-70" />
-                    </a>
-                  );
-                }
-
-                return (
-                  <motion.a
-                    key={item.label}
-                    onMouseEnter={() => setHoveredIndex(idx)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    whileTap={{ scale: 0.95 }}
-                    href="#"
-                    onClick={(e) => handleLinkClick(e, item.pageId)}
-                    className="relative px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer inline-flex items-center justify-center z-10"
-                    style={{
-                      color: isScrolled
-                        ? (hoveredIndex === idx ? '#ffffff' : '#044e37')
-                        : '#ffffff',
-                      fontWeight: currentPage === item.pageId ? '900' : '700'
-                    }}
-                  >
-                    {(hoveredIndex === idx || currentPage === item.pageId) && (
-                      <motion.div
-                        layoutId="headerBubble"
-                        className={`absolute inset-0 rounded-full -z-10 shadow ${
-                          currentPage === item.pageId 
-                            ? 'bg-emerald-800' 
-                            : isScrolled ? 'bg-emerald-600' : 'bg-emerald-700'
-                        }`}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-                      />
-                    )}
-                    {item.label}
-                  </motion.a>
-                );
-              })}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+                    />
+                  )}
+                  {item.label}
+                </motion.a>
+              ))}
             </nav>
 
             {/* CALL TO ACTION BUTTONS */}
@@ -253,42 +213,21 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
 
                 {/* Mobile Links list */}
                 <nav className="flex flex-col gap-2.5">
-                  {menuItems.map((item) => {
-                    if (item.href) {
-                      return (
-                        <a
-                          key={item.label}
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="px-3 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-between bg-emerald-50 text-emerald-900 border border-emerald-200"
-                        >
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-emerald-700" />
-                            <span>{item.label}</span>
-                          </div>
-                          <ExternalLink className="w-3.5 h-3.5 text-emerald-600" />
-                        </a>
-                      );
-                    }
-
-                    return (
-                      <a
-                        key={item.label}
-                        href="#"
-                        onClick={(e) => handleLinkClick(e, item.pageId)}
-                        className={`px-3 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-between ${
-                          currentPage === item.pageId
-                            ? 'bg-emerald-700 text-white font-black'
-                            : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-900'
-                        }`}
-                      >
-                        {item.label}
-                        <span className={`${currentPage === item.pageId ? 'text-white' : 'text-gray-300'} font-mono text-[10px]`}>&gt;</span>
-                      </a>
-                    );
-                  })}
+                  {menuItems.map((item) => (
+                    <a
+                      key={item.label}
+                      href="#"
+                      onClick={(e) => handleLinkClick(e, item.pageId)}
+                      className={`px-3 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-between ${
+                        currentPage === item.pageId
+                          ? 'bg-emerald-700 text-white font-black'
+                          : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-900'
+                      }`}
+                    >
+                      {item.label}
+                      <span className={`${currentPage === item.pageId ? 'text-white' : 'text-gray-300'} font-mono text-[10px]`}>&gt;</span>
+                    </a>
+                  ))}
                 </nav>
               </div>
 

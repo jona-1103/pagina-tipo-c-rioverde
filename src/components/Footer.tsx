@@ -7,14 +7,14 @@ import React from 'react';
 import { HeartPulse, Facebook, X, Instagram, Phone, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => void;
+  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => void;
   onOpenAppointment: () => void;
 }
 
 export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
-  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'descargas' | 'contacto') => {
+  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => {
     e.preventDefault();
     onNavigate(pageId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -115,17 +115,6 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
               </li>
               <li>
                 <a
-                  href="https://agendamiento.tipocrioverde.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white hover:underline transition-all cursor-pointer text-emerald-300 font-bold flex items-center gap-1.5"
-                >
-                  <span>Agendamiento Tipo C</span>
-                  <ExternalLink className="w-3 h-3 opacity-75" />
-                </a>
-              </li>
-              <li>
-                <a
                   href="#seccion-consulta-ecografia"
                   className="hover:text-white hover:underline transition-all cursor-pointer text-emerald-200/90 flex items-center gap-1.5"
                 >
@@ -139,15 +128,6 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
                   className="hover:text-white hover:underline transition-all cursor-pointer"
                 >
                   Acerca de Nosotros
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={(e) => handleLinkClick(e, 'descargas')}
-                  className="hover:text-white hover:underline transition-all cursor-pointer"
-                >
-                  Descargas de PDF
                 </a>
               </li>
               <li>
