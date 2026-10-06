@@ -22,16 +22,31 @@ export default function AcercaPage() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Majestic main banner block */}
-        <div className="relative rounded-3xl h-[280px] sm:h-[400px] overflow-hidden mb-12 shadow-md bg-emerald-950">
+        {/* Page Header */}
+        <div className="mb-6 space-y-2 text-left">
+          <span className="text-xs font-mono font-bold text-emerald-800 uppercase tracking-widest bg-emerald-100/70 px-3 py-1 rounded-full border border-emerald-200 inline-block">
+            CONOCE NUESTRO CENTRO DE SALUD
+          </span>
+          <h1 className="font-sans font-black text-3xl sm:text-4xl text-emerald-950 tracking-tight">
+            Acerca de Nuestra Institución
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
+            Cuidar de usted es nuestra razón de ser. Lo invitamos a conocer la historia, misión y valores del Centro de Salud Tipo C Rioverde.
+          </p>
+        </div>
+
+        {/* Majestic main banner block without gradient (100% limpia y natural) */}
+        <div className="relative rounded-3xl h-[260px] sm:h-[340px] md:h-[400px] overflow-hidden mb-12 shadow-md border border-slate-200 bg-emerald-950">
           <picture className="w-full h-full block">
+            <source srcSet={HERO_IMAGE} type="image/png" />
+            <source srcSet="/banner-rioverde.png" type="image/png" />
+            <source srcSet="/images/banner-rioverde.png" type="image/png" />
             <source srcSet="/fachada-principal.png" type="image/png" />
-            <source srcSet="/images/banner-rioverde.jpg" type="image/jpeg" />
             <img 
               src={HERO_IMAGE} 
               alt="Fachada Oficial del Centro de Salud Tipo C Rioverde" 
-              className="w-full h-full object-cover object-center md:object-[center_42%]"
-              loading="lazy"
+              className="w-full h-full object-cover object-center md:object-[center_35%]"
+              loading="eager"
               decoding="async"
               referrerPolicy="no-referrer"
               onError={(e) => {
@@ -42,16 +57,6 @@ export default function AcercaPage() {
               }}
             />
           </picture>
-          <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent flex flex-col justify-end p-6 sm:p-12 text-white">
-            <div className="max-w-3xl space-y-3">
-              <h2 className="font-sans font-black text-3xl sm:text-5xl text-emerald-50 tracking-tight leading-none drop-shadow-md">
-                Acerca de Nuestra Institución
-              </h2>
-              <p className="text-xs sm:text-sm text-white font-medium leading-relaxed max-w-2xl drop-shadow">
-                Cuidar de usted es nuestra razón de ser. Lo invitamos a conocer la historia, misión y valores del Tipo C Rioverde
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Core content references side-by-side */}

@@ -32,8 +32,8 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
       aria-label="Banner Principal Centro de Salud Tipo C Rioverde"
       className="w-full relative overflow-hidden bg-emerald-950 mt-[58px] sm:mt-[64px]"
     >
-      {/* 1. FULL-WIDTH BANNER IMAGE (100% ANCHO DE LA PÁGINA) */}
-      <div className="relative w-full h-[460px] sm:h-[520px] md:h-[580px] lg:h-[640px] xl:h-[680px] overflow-hidden bg-emerald-950">
+      {/* 1. FULL-WIDTH BANNER IMAGE (100% ANCHO DE LA PÁGINA CON ALTURA REDUCIDA Y VISTA PANORÁMICA) */}
+      <div className="relative w-full h-[360px] sm:h-[400px] md:h-[460px] lg:h-[500px] xl:h-[540px] overflow-hidden bg-emerald-950">
         
         {/* The exact same high-resolution banner image as in Acerca de Nosotros */}
         <picture className="w-full h-full block">
@@ -44,7 +44,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
           <img
             src={imgSrc}
             alt="Fachada Oficial del Centro de Salud Rio Verde Tipo C - Ministerio de Salud Pública del Ecuador"
-            className="w-full h-full object-cover object-center md:object-[center_38%] select-none transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover object-center md:object-[center_32%] select-none transition-transform duration-700 ease-out"
             loading="eager"
             decoding="async"
             fetchPriority="high"
@@ -53,8 +53,8 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
           />
         </picture>
 
-        {/* Softer gradient overlay on the left so the photo is much more visible while text remains legible */}
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/75 via-emerald-950/45 via-35% md:via-30% to-transparent pointer-events-none" />
+        {/* Soft, narrow gradient overlay on the left so the wide photo is mostly untouched while text remains legible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/80 via-emerald-950/45 via-30% md:via-25% to-transparent pointer-events-none" />
 
         {/* Minimal top shade for clean header separation */}
         <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-black/25 to-transparent pointer-events-none" />
@@ -62,10 +62,10 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
         {/* 2. TEXT & CALLOUT OVERLAY ON THE LEFT SIDE (ENCIMA DE LA IMAGEN) */}
         <div className="absolute inset-0 z-10 flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="max-w-xl lg:max-w-2xl space-y-4 sm:space-y-5 text-left text-white py-10 sm:py-14">
+            <div className="max-w-xl lg:max-w-2xl space-y-3 sm:space-y-4 text-left text-white py-6 sm:py-8">
 
               {/* Main title */}
-              <h1 className="font-sans font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight drop-shadow-lg leading-tight">
+              <h1 className="font-sans font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white tracking-tight drop-shadow-lg leading-tight">
                 Tu salud, <br />
                 <span className="text-emerald-300">nuestra misión diaria</span>
               </h1>
@@ -76,7 +76,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
               </p>
 
               {/* Action buttons on the left */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <button
                   type="button"
                   onClick={onOpenAppointment}
