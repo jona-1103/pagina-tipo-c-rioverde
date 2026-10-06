@@ -32,7 +32,7 @@ if (!fs.existsSync(publicImagesDir)) {
 let bannerTimestamp = Date.now();
 
 // If public banner does not exist or is corrupted/empty (<1KB), initialize with authentic health center image
-const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'fachada_principal_tipo_c_rioverde.png');
+const defaultBundledImage = path.join(process.cwd(), 'src', 'assets', 'images', 'banner-rioverde.png');
 const targetBannerPng = path.join(publicImagesDir, 'banner-rioverde.png');
 try {
   const needsInit = !fs.existsSync(targetBannerPng) || fs.statSync(targetBannerPng).size < 1024;

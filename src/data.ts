@@ -5,7 +5,7 @@
 
 import { MedicalService, Benefit, Statistic, BlogItem, MSPManual, DownloadableDocument } from './types';
 import doctorResultsImg from './assets/images/lab_results_rioverde_1780685509630.png';
-import heroBannerImg from './assets/images/fachada_principal_tipo_c_rioverde.png';
+import heroBannerImg from './assets/images/banner-rioverde.png';
 import ecografiaDoctorImg from './assets/images/doctor_ecografia_rioverde_1791220643957.jpg';
 
 // Main health center banner image (Centro de Salud Rio Verde Tipo C)
