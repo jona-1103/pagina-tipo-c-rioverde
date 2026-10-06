@@ -3,266 +3,141 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Camera, Check, Upload, Globe, Download, Info } from 'lucide-react';
-import { useBannerImage } from '../utils/bannerImage';
+import { Calendar, HeartPulse, Clock, ShieldCheck, MapPin, Stethoscope, ChevronRight } from 'lucide-react';
 import { HERO_IMAGE } from '../data';
-import defaultFallbackImg from '../assets/images/fachada_principal_tipo_c_rioverde.png';
 
 interface HeroProps {
   onOpenAppointment: () => void;
 }
 
 export default function Hero({ onOpenAppointment }: HeroProps) {
-  const [heroImage, uploadBannerFile, { isLocalDataImage, syncToServer, downloadBanner }] = useBannerImage();
-  const [isUploading, setIsUploading] = useState(false);
-  const [isDraggingOver, setIsDraggingOver] = useState(false);
-  const [showSuccessBadge, setShowSuccessBadge] = useState(false);
-  const [isSyncingServer, setIsSyncingServer] = useState(false);
-  const [syncSuccessBadge, setSyncSuccessBadge] = useState(false);
-  const [showStaticNotice, setShowStaticNotice] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imgSrc, setImgSrc] = useState(HERO_IMAGE);
 
-  const handleSyncToServer = async () => {
-    try {
-      setIsSyncingServer(true);
-      const res = await syncToServer();
-      if (res.success) {
-        setSyncSuccessBadge(true);
-        setTimeout(() => setSyncSuccessBadge(false), 5000);
-      } else if (res.isStatic) {
-        setShowStaticNotice(true);
-        setTimeout(() => setShowStaticNotice(false), 9000);
-      }
-    } finally {
-      setIsSyncingServer(false);
-    }
-  };
-
-  useEffect(() => {
-    const handlePaste = async (e: ClipboardEvent) => {
-      const items = e.clipboardData?.items;
-      if (!items) return;
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].type.startsWith('image/')) {
-          const file = items[i].getAsFile();
-          if (file) {
-            try {
-              setIsUploading(true);
-              await uploadBannerFile(file);
-              setShowSuccessBadge(true);
-              setTimeout(() => setShowSuccessBadge(false), 3500);
-            } catch (err) {
-              console.error('Error al pegar imagen:', err);
-            } finally {
-              setIsUploading(false);
-            }
-            break;
-          }
-        }
-      }
-    };
-    window.addEventListener('paste', handlePaste);
-    return () => window.removeEventListener('paste', handlePaste);
-  }, [uploadBannerFile]);
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      setIsUploading(true);
-      await uploadBannerFile(file);
-      setShowSuccessBadge(true);
-      setTimeout(() => setShowSuccessBadge(false), 3500);
-    } catch (err) {
-      console.error('Error al cargar imagen del banner:', err);
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDraggingOver(false);
-    const file = e.dataTransfer.files?.[0];
-    if (!file || !file.type.startsWith('image/')) return;
-    try {
-      setIsUploading(true);
-      await uploadBannerFile(file);
-      setShowSuccessBadge(true);
-      setTimeout(() => setShowSuccessBadge(false), 3500);
-    } catch (err) {
-      console.error('Error al soltar imagen en banner:', err);
-    } finally {
-      setIsUploading(false);
+  // Fallback chain for 100% universal browser compatibility (Chrome, Safari, Firefox, Edge)
+  const handleImageError = () => {
+    if (imgSrc !== '/banner-rioverde.png') {
+      setImgSrc('/banner-rioverde.png');
+    } else if (imgSrc !== '/images/banner-rioverde.png') {
+      setImgSrc('/images/banner-rioverde.png');
+    } else if (imgSrc !== '/fachada-principal.png') {
+      setImgSrc('/fachada-principal.png');
     }
   };
 
   return (
     <section
       id="banner-hero"
-      onDragOver={(e) => {
-        e.preventDefault();
-        setIsDraggingOver(true);
-      }}
-      onDragLeave={(e) => {
-        e.preventDefault();
-        setIsDraggingOver(false);
-      }}
-      onDrop={handleDrop}
-      className="relative w-full max-w-[1960px] mx-auto h-[420px] sm:h-[480px] md:h-[520px] lg:h-[620px] flex items-start overflow-hidden bg-emerald-950 mt-[60px] md:mt-0 group"
+      aria-label="Banner Principal Centro de Salud Tipo C Rioverde"
+      className="w-full bg-slate-50 pt-[62px] sm:pt-[70px]"
     >
-      {/* Visual drop indicator when dragging image over the banner */}
-      {isDraggingOver && (
-        <div className="absolute inset-0 z-30 bg-emerald-950/85 backdrop-blur-sm border-4 border-dashed border-emerald-400 flex flex-col items-center justify-center text-white p-6 pointer-events-none">
-          <Upload className="w-14 h-14 mb-3 text-emerald-300 animate-bounce" />
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-center">
-            Suelta aquí la foto de la fachada
-          </h3>
-          <p className="text-sm text-emerald-200 mt-1 font-mono">
-            banner-rioverde.png
-          </p>
-        </div>
-      )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        
+        {/* 1. AUTHENTIC PHOTOGRAPH BANNER FRAME */}
+        <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200/90 bg-emerald-950 group">
+          
+          {/* Panoramic aspect ratio displaying the full building, signage, hill and lawn */}
+          <div className="relative w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[21/9] lg:aspect-[2.4/1] min-h-[260px] sm:min-h-[340px] md:min-h-[420px] lg:min-h-[480px]">
+            <picture className="w-full h-full block">
+              <source srcSet={HERO_IMAGE} type="image/png" />
+              <source srcSet="/banner-rioverde.png" type="image/png" />
+              <source srcSet="/images/banner-rioverde.png" type="image/png" />
+              <source srcSet="/fachada-principal.png" type="image/png" />
+              <img
+                src={imgSrc}
+                alt="Fachada Oficial del Centro de Salud Rio Verde Tipo C - Ministerio de Salud Pública del Ecuador"
+                className="w-full h-full object-cover object-center md:object-[center_40%] select-none transition-transform duration-700 ease-out"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+                referrerPolicy="no-referrer"
+                onError={handleImageError}
+              />
+            </picture>
 
-      {/* Background Image of the Modern Health Center Facade */}
-      <div className="absolute inset-0 w-full h-full">
-        <img
-          src={heroImage || HERO_IMAGE}
-          alt="Fachada Principal Centro de Salud Tipo C Rioverde"
-          className="w-full h-full object-cover object-center md:object-[center_35%] transition-transform duration-700 ease-out"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            const target = e.currentTarget;
-            if (target.src !== defaultFallbackImg) {
-              target.src = defaultFallbackImg;
-            }
-          }}
-        />
-        {/* Softened white translucent overlay for optimal contrast and text legibility */}
-        <div className="absolute inset-x-0 inset-y-0 bg-gradient-to-r from-white/85 via-white/45 via-30% md:via-45% to-transparent pointer-events-none"></div>
-        {/* Extra height-based fade for mobile layouts at bottom */}
-        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white to-transparent lg:hidden pointer-events-none"></div>
-      </div>
+            {/* Subtle natural vignette only at extreme top and bottom edges - leaves 90% of the building 100% clear */}
+            <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/35 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 via-black/20 to-transparent pointer-events-none" />
 
-      {/* Floating controls to load, update or download the official facade image */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex flex-col items-end gap-2 max-w-sm">
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-          className="hidden"
-          onChange={handleFileChange}
-          id="input-cargar-fachada"
-        />
-
-        {showSuccessBadge ? (
-          <div className="flex items-center gap-2 px-4 py-2 bg-emerald-800 text-white text-xs sm:text-sm font-semibold rounded-full shadow-xl border border-emerald-400 animate-fadeIn">
-            <Check className="w-4 h-4 text-emerald-300 shrink-0" />
-            <span>Foto de fachada cargada con éxito</span>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isUploading}
-              className="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 bg-emerald-900/90 hover:bg-emerald-950 active:scale-95 text-white text-xs sm:text-sm font-bold rounded-full shadow-lg hover:shadow-xl border border-emerald-400/80 backdrop-blur-md transition-all duration-200 cursor-pointer"
-              title="Selecciona la foto oficial de la fachada de tu computadora o dispositivo"
-            >
-              {isUploading ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <Camera className="w-4 h-4 text-emerald-300 shrink-0" />
-              )}
-              <span>
-                {isUploading ? 'Guardando foto...' : 'Colocar foto oficial de fachada'}
-              </span>
-            </button>
-          </div>
-        )}
-
-        {/* Action buttons when user has custom photo in browser */}
-        {isLocalDataImage && (
-          <div className="flex flex-col items-end gap-1.5">
-            <div className="flex items-center gap-1.5 flex-wrap justify-end">
-              {/* Download banner file directly for static hosting (tipocrioverde.com) */}
-              <button
-                type="button"
-                onClick={downloadBanner}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-semibold rounded-full shadow-md border border-emerald-400/90 transition-all cursor-pointer"
-                title="Descarga la imagen para reemplazarla en la carpeta public/images o en el administrador de archivos de tu hosting"
-              >
-                <Download className="w-3.5 h-3.5 text-emerald-200 shrink-0" />
-                <span>Descargar banner-rioverde.png</span>
-              </button>
-
-              {/* Sync button */}
-              {syncSuccessBadge ? (
-                <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-700 text-white text-xs font-semibold rounded-full shadow-lg border border-emerald-300 animate-fadeIn">
-                  <Check className="w-3.5 h-3.5 text-emerald-200 shrink-0" />
-                  <span>¡Sincronizada con el servidor!</span>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleSyncToServer}
-                  disabled={isSyncingServer}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-emerald-900/80 hover:bg-emerald-950 text-emerald-100 hover:text-white text-xs font-semibold rounded-full shadow-sm border border-emerald-500/60 transition-all cursor-pointer"
-                  title="Sincronizar con el servidor de la aplicación"
-                >
-                  {isSyncingServer ? (
-                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Globe className="w-3 h-3 text-emerald-300 shrink-0" />
-                  )}
-                  <span>{isSyncingServer ? 'Sincronizando...' : 'Sincronizar'}</span>
-                </button>
-              )}
+            {/* Official Institutional Pill (Top Left) */}
+            <div className="absolute top-3 left-3 sm:top-5 sm:left-5 z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-white/80 shadow-md text-emerald-950 text-[11px] sm:text-xs font-bold uppercase tracking-wider">
+                <HeartPulse className="w-4 h-4 text-emerald-600 animate-pulse" />
+                <span>Centro de Salud Tipo C Rioverde · MSP</span>
+              </div>
             </div>
 
-            {/* Static notice explanation if on tipocrioverde.com or static host */}
-            {showStaticNotice && (
-              <div className="bg-emerald-950/95 text-emerald-100 text-[11px] p-2.5 rounded-xl border border-emerald-400 shadow-xl max-w-xs text-right leading-tight animate-fadeIn">
-                <div className="flex items-start gap-1.5 text-left">
-                  <Info className="w-4 h-4 text-emerald-300 shrink-0 mt-0.5" />
-                  <p>
-                    Tu sitio en producción es estático. Para que la foto se vea permanente en todos los navegadores y celulares, haz clic en <strong>«Descargar banner-rioverde.png»</strong> y súbela a tu hosting en la carpeta <code>public/images/</code>.
-                  </p>
-                </div>
+            {/* Emergency Status Pill (Top Right) */}
+            <div className="absolute top-3 right-3 sm:top-5 sm:right-5 z-10">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-emerald-950/85 backdrop-blur-md border border-emerald-400/40 text-white text-[11px] sm:text-xs font-semibold shadow-md">
+                <Clock className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Emergencias 24/7</span>
               </div>
-            )}
+            </div>
+
+            {/* In-photo caption strip at bottom showing full institution name */}
+            <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-5 z-10 text-white drop-shadow-md">
+              <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase text-emerald-300 block">
+                Fotografía Oficial de la Sede Institucional
+              </span>
+              <span className="text-sm sm:text-base md:text-lg font-black text-white">
+                Palestina · Cantón Rioverde, Provincia de Esmeraldas
+              </span>
+            </div>
+
           </div>
-        )}
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="max-w-md md:max-w-xl lg:max-w-2xl space-y-4 text-left p-2 pt-28 sm:pt-40 md:pt-48 lg:pt-56">
-          
-          {/* Slogan */}
-          <motion.h2
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-sans font-black text-3xl sm:text-4xl lg:text-5xl text-emerald-950 tracking-tight leading-tight drop-shadow-sm"
-            id="hero-main-title"
-          >
-            Tu salud, <br className="hidden sm:inline" />
-            <span className="text-emerald-700">nuestra misión diaria</span>
-          </motion.h2>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-sm sm:text-base text-gray-800 font-medium leading-relaxed max-w-lg"
-          >
-            Brindar atención médica integral, accesible y de calidad a toda la comunidad Rioverdeña y de sus parroquias. Conoce nuestros servicios, accede a tus resultados y encuentra cómo llegar hasta nosotros.
-          </motion.p>
-          
         </div>
+
+        {/* 2. INSTITUTIONAL CALLOUT & ACTIONS DIRECTLY BELOW THE BANNER */}
+        <div className="mt-4 sm:mt-6 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6 text-left">
+          
+          {/* Headlines & Motto */}
+          <div className="space-y-2 max-w-3xl">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                MSP Distrito 08D02 Rioverde
+              </span>
+              <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                Atención 100% Gratuita
+              </span>
+            </div>
+
+            <h1 className="font-sans font-black text-2xl sm:text-3xl md:text-4xl text-emerald-950 tracking-tight leading-tight">
+              Tu salud, nuestra misión diaria
+            </h1>
+
+            <p className="text-xs sm:text-sm md:text-base text-slate-600 font-normal leading-relaxed">
+              Infraestructura médica moderna y de vanguardia para toda la comunidad Rioverdeña y sus parroquias. Medicina familiar, emergencias 24h, parto intercultural humanizado, laboratorio clínico y farmacia gratuita.
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={onOpenAppointment}
+              className="px-5 py-3.5 bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white font-bold text-xs sm:text-sm rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              id="hero-btn-citas"
+            >
+              <Calendar className="w-4 h-4" />
+              <span>Agendar Cita Médica</span>
+            </button>
+
+            <a
+              href="#seccion-servicios"
+              className="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 cursor-pointer text-center"
+            >
+              <Stethoscope className="w-4 h-4 text-emerald-700" />
+              <span>Ver Servicios Clínicos</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            </a>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

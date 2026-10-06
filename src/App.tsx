@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -35,6 +35,27 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<'inicio' | 'servicios' | 'nosotros' | 'contacto'>('inicio');
   const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
   const [preselectedSpecialty, setPreselectedSpecialty] = useState<string | undefined>(undefined);
+
+  // Clear any stale cached banner images from older sessions
+  useEffect(() => {
+    try {
+      const staleKeys = [
+        'rioverde_fachada_banner_url_v3',
+        'rioverde_fachada_banner_url_v2',
+        'rioverde_fachada_banner_url',
+        'rioverde_banner_url',
+      ];
+      staleKeys.forEach((k) => localStorage.removeItem(k));
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        if (key && (key.includes('fachada_banner') || key.includes('rioverde_banner'))) {
+          localStorage.removeItem(key);
+        }
+      }
+    } catch (e) {
+      // Ignore storage errors
+    }
+  }, []);
 
   const handleOpenAppointment = (specialtyId?: string) => {
     window.open('https://api.whatsapp.com/send/?phone=593961171171&text=Hola&app_absent=0', '_blank', 'noreferrer,noopener');

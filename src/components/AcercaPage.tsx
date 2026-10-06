@@ -5,13 +5,11 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { useBannerImage } from '../utils/bannerImage';
 import { HERO_IMAGE } from '../data';
 import defaultFallbackImg from '../assets/images/fachada_principal_tipo_c_rioverde.png';
 import { HeartPulse, ShieldCheck, Award, Eye, Compass, Target, Sparkles, Building2, BookOpen, Users } from 'lucide-react';
 
 export default function AcercaPage() {
-  const [heroImage] = useBannerImage();
 
   return (
     <motion.div 
@@ -25,19 +23,25 @@ export default function AcercaPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Majestic main banner block */}
-        <div className="relative rounded-3xl h-[280px] sm:h-[400px] overflow-hidden mb-12 shadow-md">
-          <img 
-            src={heroImage || HERO_IMAGE} 
-            alt="Fachada Principal Centro de Salud Tipo C Rioverde" 
-            className="w-full h-full object-cover object-center saturate-100 brightness-100 opacity-100"
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              const target = e.currentTarget;
-              if (target.src !== defaultFallbackImg) {
-                target.src = defaultFallbackImg;
-              }
-            }}
-          />
+        <div className="relative rounded-3xl h-[280px] sm:h-[400px] overflow-hidden mb-12 shadow-md bg-emerald-950">
+          <picture className="w-full h-full block">
+            <source srcSet="/fachada-principal.png" type="image/png" />
+            <source srcSet="/images/banner-rioverde.jpg" type="image/jpeg" />
+            <img 
+              src={HERO_IMAGE} 
+              alt="Fachada Oficial del Centro de Salud Tipo C Rioverde" 
+              className="w-full h-full object-cover object-center md:object-[center_42%]"
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (target.src !== defaultFallbackImg) {
+                  target.src = defaultFallbackImg;
+                }
+              }}
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent flex flex-col justify-end p-6 sm:p-12 text-white">
             <div className="max-w-3xl space-y-3">
               <h2 className="font-sans font-black text-3xl sm:text-5xl text-emerald-50 tracking-tight leading-none drop-shadow-md">

@@ -46,7 +46,15 @@ try {
   console.warn('Initial banner sync warning:', e);
 }
 
-app.use(express.static(publicDir));
+app.use(express.static(publicDir, {
+  setHeaders: (res, filePath) => {
+    if (filePath.includes('fachada') || filePath.includes('banner')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+}));
 
 // Endpoint to upload and persist the official banner image
 app.post('/api/upload-banner', express.json({ limit: '50mb' }), (req, res) => {
@@ -115,11 +123,18 @@ app.get('/api/banner-image', (req, res) => {
   ];
   for (const p of possiblePaths) {
     if (fs.existsSync(p) && fs.statSync(p).size > 1024) {
-      const ext = path.extname(p).toLowerCase();
-      res.setHeader('Content-Type', ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/png');
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
+      try {
+        const fd = fs.openSync(p, 'r');
+        const headBuf = Buffer.alloc(4);
+        fs.readSync(fd, headBuf, 0, 4, 0);
+        fs.closeSync(fd);
+        const isJpeg = headBuf[0] === 0xff && headBuf[1] === 0xd8;
+        res.setHeader('Content-Type', isJpeg ? 'image/jpeg' : 'image/png');
+      } catch {
+        const ext = path.extname(p).toLowerCase();
+        res.setHeader('Content-Type', ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/png');
+      }
+      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
       return fs.createReadStream(p).pipe(res);
     }
   }
