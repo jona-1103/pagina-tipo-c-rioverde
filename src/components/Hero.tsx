@@ -72,7 +72,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
 
               {/* Description */}
               <p className="text-xs sm:text-sm md:text-base text-white/95 font-medium leading-relaxed drop-shadow-md max-w-xl">
-                Infraestructura médica moderna y de vanguardia para toda la comunidad Rioverdeña y sus parroquias. Medicina familiar, emergencias 24h, parto intercultural humanizado, laboratorio clínico y farmacia gratuita.
+                Estamos listos para atenderte en el momento en que lo necesites. Cuidamos la salud de cada familia rioverdeña y de sus parroquias con médicos siempre disponibles y emergencias las 24 horas. Además, respetamos tus raíces con nuestro servicio de parto intercultural humanizado. Estamos aquí, muy cerca de ti. <span className="font-semibold text-emerald-200 block sm:inline mt-1 sm:mt-0">¡Tu bienestar y el de tu familia es nuestra prioridad!</span>
               </p>
 
               {/* Action buttons on the left */}
@@ -110,7 +110,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
             <strong className="text-white">Emergencias:</strong> Abierto 24/7 los 365 días
           </div>
           <div className="hidden sm:flex items-center gap-1.5 shrink-0">
-            <strong className="text-white">Consulta Externa:</strong> Lunes a Viernes 07:00 a 19:00
+            <strong className="text-white">Consulta Externa:</strong> Lunes a Viernes 08:00 a 16:30
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
             <strong className="text-white">Gratuidad:</strong> 100% Sin costo (Atención y Medicamentos)
