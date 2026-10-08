@@ -12,24 +12,13 @@ import {
   ExternalLink,
   Eye,
   Search,
-  BookOpen,
   ShieldCheck,
-  Filter,
-  CheckCircle2,
-  FolderOpen,
-  ArrowRight,
   X,
-  FileCheck,
-  Share2,
-  HelpCircle,
-  FileCode,
   LayoutGrid,
   List
 } from 'lucide-react';
 import {
   DRIVE_ITEMS,
-  GOOGLE_DRIVE_FOLDER_URL,
-  GOOGLE_DRIVE_FOLDER_ID,
   DriveItem
 } from '../data/normasProtocolosData';
 
@@ -42,7 +31,6 @@ export default function NormasProtocolosPage({ onNavigate }: NormasProtocolosPag
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeViewMode, setActiveViewMode] = useState<'grid' | 'list'>('grid');
   const [previewItem, setPreviewItem] = useState<DriveItem | null>(null);
-  const [showDriveEmbed, setShowDriveEmbed] = useState<boolean>(false);
 
   // Filtered drive items
   const filteredItems = useMemo(() => {
@@ -108,69 +96,10 @@ export default function NormasProtocolosPage({ onNavigate }: NormasProtocolosPag
             <p className="text-xs sm:text-sm md:text-base text-emerald-100/90 leading-relaxed max-w-2xl font-normal">
               Repositorio institucional oficial con las guías de práctica clínica (GPC), normas técnicas de atención, protocolos hospitalarios y marco legal de derechos del paciente aplicados en el Centro de Salud Tipo C Rioverde.
             </p>
-
-            {/* Direct Google Drive Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <a
-                href={GOOGLE_DRIVE_FOLDER_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-3 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-emerald-950 font-bold rounded-xl text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-emerald-950/40 transition-all cursor-pointer"
-                title="Abrir carpeta compartida directamente en Google Drive"
-              >
-                <FolderOpen className="w-4 h-4 text-emerald-950" />
-                <span>Abrir carpeta en Google Drive</span>
-                <ExternalLink className="w-3.5 h-3.5 opacity-80" />
-              </a>
-
-              <button
-                type="button"
-                onClick={() => setShowDriveEmbed(!showDriveEmbed)}
-                className="px-4 py-3 bg-white/10 hover:bg-white/20 active:scale-95 text-white font-semibold rounded-xl text-xs sm:text-sm border border-white/20 backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer"
-              >
-                <BookOpen className="w-4 h-4 text-emerald-300" />
-                <span>{showDriveEmbed ? 'Ocultar Visor Integrado de Drive' : 'Ver Visor de Google Drive'}</span>
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* 2. OPTIONAL EMBEDDED GOOGLE DRIVE IFRAME VIEWER */}
-        <AnimatePresence>
-          {showDriveEmbed && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-8 overflow-hidden rounded-2xl border border-slate-200 shadow-md bg-white"
-            >
-              <div className="p-4 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Folder className="w-4 h-4 text-emerald-700" />
-                  <span className="text-xs font-bold text-slate-800">
-                    Explorador de Google Drive embebido (ID: {GOOGLE_DRIVE_FOLDER_ID})
-                  </span>
-                </div>
-                <button
-                  onClick={() => setShowDriveEmbed(false)}
-                  className="text-xs text-slate-500 hover:text-slate-800 font-semibold cursor-pointer"
-                >
-                  Cerrar visor
-                </button>
-              </div>
-              <div className="w-full h-[520px] bg-slate-50">
-                <iframe
-                  src={`https://drive.google.com/embeddedfolderview?id=${GOOGLE_DRIVE_FOLDER_ID}#grid`}
-                  className="w-full h-full border-0"
-                  title="Google Drive Folder Embed"
-                  loading="lazy"
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* 3. THREE MAIN FOLDER CARDS (QUICK SHORTCUTS) */}
+        {/* 2. THREE MAIN FOLDER CARDS (QUICK SHORTCUTS) */}
         <div className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base sm:text-lg font-bold text-emerald-950 flex items-center gap-2">
@@ -561,32 +490,9 @@ export default function NormasProtocolosPage({ onNavigate }: NormasProtocolosPag
           )}
         </div>
 
-        {/* 6. BOTTOM NOTICE & GOOGLE DRIVE FOLDER LINK */}
-        <div className="mt-12 bg-emerald-50 rounded-2xl p-6 sm:p-8 border border-emerald-100 text-left flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1 max-w-2xl">
-            <h3 className="font-sans font-bold text-base text-emerald-950 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-              <span>Acceso Abierto a la Información Pública en Salud</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Todos los documentos provienen de la carpeta oficial compartida del Ministerio de Salud Pública de Ecuador para el Distrito 08D02 Rioverde. Si necesitas un documento clínico adicional, puedes acceder al directorio central completo en Google Drive.
-            </p>
-          </div>
-
-          <a
-            href={GOOGLE_DRIVE_FOLDER_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-3 bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shrink-0 shadow-sm transition-all"
-          >
-            <span>Ir a la Carpeta Central en Google Drive</span>
-            <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
-
       </div>
 
-      {/* 7. DOCUMENT PREVIEW MODAL */}
+      {/* DOCUMENT PREVIEW MODAL */}
       <AnimatePresence>
         {previewItem && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">

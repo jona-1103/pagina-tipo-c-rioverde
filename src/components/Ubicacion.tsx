@@ -68,7 +68,7 @@ export default function Ubicacion() {
                   <strong className="text-emerald-300 uppercase tracking-wider block font-mono text-[8px]">HORARIOS ASISTENCIALES</strong>
                   <div className="text-emerald-50 leading-normal space-y-0.5 text-[10.5px]">
                     <p><span className="text-emerald-400 font-medium">Emergencia:</span> 24H / 7 Días</p>
-                    <p><span className="text-emerald-400 font-medium">C. Externa:</span> Lun - Vie | 8 AM - 5 PM</p>
+                    <p><span className="text-emerald-400 font-medium">C. Externa:</span> Lun - Vie | 8:00 AM - 16:30 PM</p>
                   </div>
                 </div>
               </motion.div>

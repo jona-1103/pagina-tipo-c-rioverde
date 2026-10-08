@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, HeartPulse, Sparkles, PhoneCall, Calendar, ExternalLink } from 'lucide-react';
+import { Menu, X, HeartPulse, Sparkles, Calendar, ExternalLink } from 'lucide-react';
 
 interface HeaderProps {
   onOpenAppointment: () => void;
@@ -146,16 +146,6 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
                 <span>Agendamiento Tipo C</span>
                 <ExternalLink className="w-3 h-3 opacity-80" />
               </a>
-
-              <button
-                onClick={onOpenAppointment}
-                className="px-3 py-2 bg-emerald-900/60 hover:bg-emerald-800 text-emerald-100 hover:text-white font-semibold rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 border border-emerald-700/50 cursor-pointer"
-                id="header-cta-appointment"
-                title="Atención directa por WhatsApp oficial"
-              >
-                <PhoneCall className="w-3 h-3 text-emerald-400" />
-                <span>WhatsApp</span>
-              </button>
             </div>
 
             {/* MOBILE TRIGGER */}
@@ -246,16 +236,6 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
 
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenAppointment();
-                  }}
-                  className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>WhatsApp Citas</span>
-                </button>
                 <div className="flex justify-center text-[10px] text-gray-400 font-mono">
                   MSP ATENCIÓN GRATUITA EN ECUADOR
                 </div>
