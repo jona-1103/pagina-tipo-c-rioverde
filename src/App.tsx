@@ -21,6 +21,7 @@ import AIAssistantWidget from './components/AIAssistantWidget';
 // PAGE VIEWS
 import ServiciosPage from './components/ServiciosPage';
 import AcercaPage from './components/AcercaPage';
+import NormasProtocolosPage from './components/NormasProtocolosPage';
 import ContactoPage from './components/ContactoPage';
 import SecureClinicalPortal from './components/SecureClinicalPortal';
 
@@ -32,7 +33,7 @@ export default function App() {
     return <SecureClinicalPortal />;
   }
 
-  const [currentPage, setCurrentPage] = useState<'inicio' | 'servicios' | 'nosotros' | 'contacto'>('inicio');
+  const [currentPage, setCurrentPage] = useState<'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto'>('inicio');
   const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
   const [preselectedSpecialty, setPreselectedSpecialty] = useState<string | undefined>(undefined);
 
@@ -66,7 +67,7 @@ export default function App() {
     setPreselectedSpecialty(undefined);
   };
 
-  const handlePageNavigation = (page: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => {
+  const handlePageNavigation = (page: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => {
     setCurrentPage(page);
     window.scrollTo({ top: 0 });
   };
@@ -146,6 +147,19 @@ export default function App() {
               className="w-full"
             >
               <AcercaPage />
+            </motion.div>
+          )}
+
+          {currentPage === 'protocolos' && (
+            <motion.div
+              key="protocolos-page"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35 }}
+              className="w-full"
+            >
+              <NormasProtocolosPage onNavigate={handlePageNavigation} />
             </motion.div>
           )}
 

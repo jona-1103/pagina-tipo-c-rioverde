@@ -7,14 +7,14 @@ import React from 'react';
 import { HeartPulse, Facebook, X, Instagram, Phone, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => void;
+  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => void;
   onOpenAppointment: () => void;
 }
 
 export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
-  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => {
+  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => {
     e.preventDefault();
     onNavigate(pageId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -128,6 +128,15 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
                   className="hover:text-white hover:underline transition-all cursor-pointer"
                 >
                   Acerca de Nosotros
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={(e) => handleLinkClick(e, 'protocolos')}
+                  className="hover:text-white hover:underline transition-all cursor-pointer"
+                >
+                  Normas y protocolos
                 </a>
               </li>
               <li>

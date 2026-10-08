@@ -9,8 +9,8 @@ import { Menu, X, HeartPulse, Sparkles, PhoneCall, Calendar, ExternalLink } from
 
 interface HeaderProps {
   onOpenAppointment: () => void;
-  currentPage: 'inicio' | 'servicios' | 'nosotros' | 'contacto';
-  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => void;
+  currentPage: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto';
+  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => void;
 }
 
 export default function Header({ onOpenAppointment, currentPage, onNavigate }: HeaderProps) {
@@ -35,10 +35,11 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
     { label: 'Inicio', pageId: 'inicio' as const },
     { label: 'Servicios', pageId: 'servicios' as const },
     { label: 'Acerca de Nosotros', pageId: 'nosotros' as const },
+    { label: 'Normas y protocolos', pageId: 'protocolos' as const },
     { label: 'Contacto', pageId: 'contacto' as const },
   ];
 
-  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'contacto') => {
+  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => {
     e.preventDefault();
     setMobileMenuOpen(false);
     onNavigate(pageId);

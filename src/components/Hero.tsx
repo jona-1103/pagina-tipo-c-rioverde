@@ -72,7 +72,12 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
 
               {/* Description */}
               <p className="text-xs sm:text-sm md:text-base text-white/95 font-medium leading-relaxed drop-shadow-md max-w-xl">
-                Estamos listos para atenderte en el momento en que lo necesites. Cuidamos la salud de cada familia rioverdeña y de sus parroquias con médicos siempre disponibles y emergencias las 24 horas. Además, respetamos tus raíces con nuestro servicio de parto intercultural humanizado. Estamos aquí, muy cerca de ti. <span className="font-semibold text-emerald-200 block sm:inline mt-1 sm:mt-0">¡Tu bienestar y el de tu familia es nuestra prioridad!</span>
+                Estamos listos para atenderte en el momento en que lo necesites. Cuidamos la salud de cada familia rioverdeña y de sus parroquias con médicos siempre disponibles y emergencias las 24 horas. Además, respetamos tus raíces con nuestro servicio de parto intercultural humanizado. Estamos aquí, muy cerca de ti.
+              </p>
+
+              {/* Slogan highlight on single line below */}
+              <p className="text-xs sm:text-sm md:text-base font-bold text-emerald-300 drop-shadow-md block sm:whitespace-nowrap">
+                ¡Tu bienestar y el de tu familia es nuestra prioridad!
               </p>
 
               {/* Action buttons on the left */}
