@@ -194,7 +194,7 @@ export default function AcercaPage() {
               <HeartPulse className="w-8 h-8 text-emerald-400" />
               <h4 className="font-sans font-extrabold text-white text-md">Nuestro Compromiso de Salud</h4>
               <p className="text-xs text-emerald-100/80 leading-relaxed">
-                "Promover el acceso equitativo and oportuno a los servicios de salud del Ecuador, erradicando barreras geográficas o económicas de nuestra colectividad mediante la entrega constante de medicamentos y atenciones 100% financiadas por el Estado."
+                "Promover el acceso equitativo y oportuno a los servicios de salud, erradicando barreras geográficas o económicas de nuestra colectividad mediante la atención y entrega de medicamentos gratuitos."
               </p>
               <div className="border-t border-white/10 pt-3 text-[10px] text-emerald-300 font-mono">
                 — Comité Técnico de Salud Tipo C Rioverde

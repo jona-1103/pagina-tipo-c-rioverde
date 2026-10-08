@@ -74,10 +74,6 @@ export default function LaboratoryWidget() {
                     <FlaskConical className="w-3.5 h-3.5 text-emerald-700" />
                     <span>Laboratorio Clínico</span>
                   </span>
-
-                  <span className="absolute bottom-3 left-4 text-xs font-semibold text-white drop-shadow-sm">
-                    MSP Ecuador · Análisis Automatizados
-                  </span>
                 </div>
 
                 {/* Card detail contents */}
@@ -127,10 +123,6 @@ export default function LaboratoryWidget() {
                   <span className="absolute top-3 left-3 text-[10px] font-bold tracking-wider text-emerald-950 bg-white px-3 py-1 rounded-full uppercase shadow-sm flex items-center gap-1.5">
                     <Waves className="w-3.5 h-3.5 text-emerald-700" />
                     <span>Imagenología y Ecografía</span>
-                  </span>
-
-                  <span className="absolute bottom-3 left-4 text-xs font-semibold text-white drop-shadow-sm">
-                    MSP Ecuador · Ultrasonido 2D/3D
                   </span>
                 </div>
 
