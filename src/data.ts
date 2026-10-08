@@ -7,11 +7,13 @@ import { MedicalService, Benefit, Statistic, BlogItem, MSPManual, DownloadableDo
 import doctorResultsImg from './assets/images/lab_results_rioverde_1780685509630.png';
 import heroBannerImg from './assets/images/banner-rioverde.png';
 import ecografiaDoctorImg from './assets/images/doctor_ecografia_rioverde_1791220643957.jpg';
+import fenomenoNinoImg from './assets/images/fenomeno_nino_prevencion_1791492406137.jpg';
 
 // Main health center banner image (Centro de Salud Rio Verde Tipo C)
 export const HERO_IMAGE = heroBannerImg;
 export const DOCTOR_RESULTS_IMAGE = doctorResultsImg;
 export const ECOGRAFIA_IMAGE = ecografiaDoctorImg;
+export const FENOMENO_NINO_IMAGE = fenomenoNinoImg;
 
 export const benefitsList: Benefit[] = [
   {
@@ -22,7 +24,7 @@ export const benefitsList: Benefit[] = [
   },
   {
     id: 'profesionales-calificados',
-    title: 'Profesionales de la salud',
+    title: 'Profesionales en diversas áreas de la salud',
     description: 'Médicos especialistas, licenciados y técnicos comprometidos con la excelencia del CSTCR.',
     iconName: 'Award',
   },
@@ -115,8 +117,8 @@ export const statisticsList: Statistic[] = [
   },
   {
     id: 'profesionales',
-    value: '+20',
-    label: 'Profesionales de la salud',
+    value: '+50',
+    label: 'Profesionales en diversas áreas de la salud',
     iconName: 'ShieldCheck',
   },
   {
@@ -135,14 +137,14 @@ export const statisticsList: Statistic[] = [
 
 export const blogList: BlogItem[] = [
   {
-    id: 'prevencion-dengue',
-    title: 'Prevención del Dengue: Campaña en Parroquias de Rioverde',
-    description: 'Descubre las medidas clave para erradicar criaderos de mosquitos en el hogar ante la llegada de la temporada invernal.',
-    content: 'El Centro de Salud Tipo C Rioverde hace un llamado a toda la población del cantón a intensificar las labores mecánicas de limpieza en sus predios. Tras las constantes lluvias registradas en el norte de Esmeraldas, el mosquito Aedes aegypti encuentra condiciones óptimas de reproducción en recipientes de agua estancada.\n\nNuestras brigadas de Vigilancia Epidemiológica se encuentran recorriendo las parroquias de Rocafuerte, Lagarto, Montalvo y Chontaduro, realizando fumigación intradomiciliaria y entregando abate. Recuerda poner en práctica la regla de oro: Lava, tapa, voltea y bota. Si presentas fiebre alta, dolor ocular o sarpullido, acude a nuestro centro de salud y no te automediques.',
-    date: '28 Mayo 2026',
-    category: 'Salud Pública',
+    id: 'prevencion-fenomeno-nino',
+    title: 'Prevención y Salud ante el Fenómeno de El Niño en Rioverde',
+    description: 'Medidas de contingencia, cuidado de agua potable y respuesta médica comunitaria en el cantón y sus parroquias.',
+    content: 'El Centro de Salud Tipo C Rioverde ha activado su plan de contingencia y vigilancia epidemiológica para mitigar los efectos en la salud provocados por el Fenómeno de El Niño en la provincia de Esmeraldas.\n\nNuestras brigadas médicas recorren de forma continua las comunidades y parroquias ribereñas, brindando chequeos preventivos, tratamiento de afecciones estacionales y distribución de pastillas potabilizadoras para garantizar el consumo de agua segura.\n\nSe recomienda a las familias almacenar agua en recipientes debidamente tapados, evitar el estancamiento de aguas lluvias y acudir inmediatamente al área de Emergencia o Consulta Externa ante fiebre, diarrea o síntomas infecciosos.',
+    date: '08 Junio 2026',
+    category: 'Vigilancia Epidemiológica',
     readTime: '4 min read',
-    imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80'
+    imageUrl: FENOMENO_NINO_IMAGE
   },
   {
     id: 'control-prenatal',

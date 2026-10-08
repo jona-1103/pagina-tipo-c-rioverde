@@ -122,7 +122,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
           </div>
           <div className="hidden md:flex items-center gap-1.5 shrink-0">
             <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Palestina, Cantón Rioverde, Esmeraldas</span>
+            <span>Cantón Rioverde, Esmeraldas</span>
           </div>
         </div>
       </div>

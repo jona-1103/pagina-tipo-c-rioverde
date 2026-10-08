@@ -3,25 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   FlaskConical, 
   Waves,
-  ShieldCheck, 
-  KeyRound, 
-  ExternalLink,
-  ChevronRight,
-  FileScan,
-  CheckCircle2,
-  Activity,
-  ArrowRight,
-  Shield
+  ArrowRight
 } from 'lucide-react';
 import { DOCTOR_RESULTS_IMAGE, ECOGRAFIA_IMAGE } from '../data';
-import EcografiaModal from './EcografiaModal';
 
 export default function LaboratoryWidget() {
-  const [isEcografiaModalOpen, setIsEcografiaModalOpen] = useState(false);
 
   const handleOpenLabPortal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -96,20 +86,8 @@ export default function LaboratoryWidget() {
                     Consulta de Resultados de Laboratorio
                   </h4>
                   <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
-                    Acceda al portal institucional para consultar y descargar sus exámenes de sangre, química clínica, coprológicos y uroanálisis con entrega inmediata.
+                    Acceda al portal institucional para consultar y descargar sus exámenes de sangre, química clínica, coprológicos y uroanálisis.
                   </p>
-
-                  {/* Micro-features list */}
-                  <div className="pt-2 space-y-2 text-xs text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Conexión cifrada directa con cédula y contraseña</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Descarga de informes oficiales firmados digitalmente</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -164,33 +142,22 @@ export default function LaboratoryWidget() {
                   <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
                     Visualice y descargue los informes médicos de ecografías obstétricas (embarazo), abdominales, pélvicas y renales con biometría completa y conclusiones.
                   </p>
-
-                  {/* Micro-features list */}
-                  <div className="pt-2 space-y-2 text-xs text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <FileScan className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Firma electrónica certificada del médico imagenólogo</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Consulta rápida con número de cédula o código de orden</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
               {/* Action button footer */}
               <div className="p-6 pt-0 border-t border-gray-50 mt-4">
-                <button
-                  type="button"
-                  onClick={() => setIsEcografiaModalOpen(true)}
+                <a
+                  href="https://ecografias.tipocrioverde.com/login.php"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full py-3.5 px-5 bg-emerald-800 hover:bg-emerald-900 active:scale-98 text-white font-bold rounded-xl text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-sm group-hover:shadow-md"
                   id="btn-acceder-ecografia"
                 >
                   <Waves className="w-4 h-4 text-emerald-200" />
                   <span>Consultar Exámenes de Ecografía</span>
                   <ArrowRight className="w-4 h-4 text-emerald-200 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </div>
 
@@ -198,12 +165,6 @@ export default function LaboratoryWidget() {
 
         </div>
       </section>
-
-      {/* Ecografia Consultation Modal */}
-      <EcografiaModal
-        isOpen={isEcografiaModalOpen}
-        onClose={() => setIsEcografiaModalOpen(false)}
-      />
     </>
   );
 }

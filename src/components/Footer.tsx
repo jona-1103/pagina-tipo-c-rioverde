@@ -43,7 +43,7 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
               </div>
             </div>
             <p className="text-xs text-emerald-200/70 leading-relaxed max-w-sm">
-              Establecimiento de salud gubernamental enfocado en proveer atención médica con gratuidad, calidad y calidez intercultural. Equipado con triage de urgencia operativa 24/7 y laboratorios automatizados.
+              Somos un establecimiento de salud de primer nivel enfocados en ofrecer una atención médica gratuita, de calidad y con calidez.
             </p>
             {/* Minimalist social icons */}
             <div className="flex items-center gap-3 pt-2">
@@ -115,7 +115,9 @@ export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
               </li>
               <li>
                 <a
-                  href="#seccion-consulta-ecografia"
+                  href="https://ecografias.tipocrioverde.com/login.php"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-white hover:underline transition-all cursor-pointer text-emerald-200/90 flex items-center gap-1.5"
                 >
                   <span>Consulta de Ecografías</span>
