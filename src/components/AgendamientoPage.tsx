@@ -9,13 +9,9 @@ import {
   Calendar, 
   Waves, 
   ExternalLink, 
-  ShieldCheck, 
   Clock, 
-  CheckCircle2, 
-  FileText, 
   Stethoscope, 
-  ArrowRight,
-  UserCheck
+  ArrowRight
 } from 'lucide-react';
 import { 
   HERO_IMAGE, 
@@ -124,7 +120,7 @@ export default function AgendamientoPage({ onNavigate }: AgendamientoPageProps) 
                   </span>
 
                   <span className="absolute bottom-3 left-4 text-xs font-bold text-white drop-shadow-md">
-                    Medicina Familiar · Odontología · Obstetricia · Pediatría
+                    Medicina Familiar · Odontología · Obstetricia
                   </span>
                 </div>
 
@@ -133,21 +129,6 @@ export default function AgendamientoPage({ onNavigate }: AgendamientoPageProps) 
                   <h3 className="font-sans font-black text-2xl text-emerald-950 group-hover:text-emerald-700 transition-colors leading-tight">
                     Agendamiento Interno Tipo C
                   </h3>
-
-                  <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-600">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Atención 100% gratuita financiada por el Ministerio de Salud Pública</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Asignación de fecha y hora según disponibilidad médica</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Acceso con número de cédula de identidad</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -192,7 +173,7 @@ export default function AgendamientoPage({ onNavigate }: AgendamientoPageProps) 
                   </span>
 
                   <span className="absolute bottom-3 left-4 text-xs font-bold text-white drop-shadow-md">
-                    Ecografías Obstétricas · Abdominales · Pélvicas · Renales
+                    Ecografías Obstétricas · Abdominales · Pélvicas
                   </span>
                 </div>
 
@@ -201,21 +182,6 @@ export default function AgendamientoPage({ onNavigate }: AgendamientoPageProps) 
                   <h3 className="font-sans font-black text-2xl text-emerald-950 group-hover:text-emerald-700 transition-colors leading-tight">
                     Agendamiento de Ecografía
                   </h3>
-
-                  <div className="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-600">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Ecografías para control del embarazo y diagnósticos clínicos</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Acceso directo al portal institucional de ecografías</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Descarga posterior de informes y resultados digitales</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
