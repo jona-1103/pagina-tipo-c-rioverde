@@ -9,8 +9,8 @@ import { Menu, X, HeartPulse, Sparkles, Calendar, ExternalLink } from 'lucide-re
 
 interface HeaderProps {
   onOpenAppointment: () => void;
-  currentPage: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto';
-  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => void;
+  currentPage: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'agendamiento' | 'contacto';
+  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'agendamiento' | 'contacto') => void;
 }
 
 export default function Header({ onOpenAppointment, currentPage, onNavigate }: HeaderProps) {
@@ -39,7 +39,7 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
     { label: 'Contacto', pageId: 'contacto' as const },
   ];
 
-  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => {
+  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'agendamiento' | 'contacto') => {
     e.preventDefault();
     setMobileMenuOpen(false);
     onNavigate(pageId);
@@ -129,23 +129,26 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
 
             {/* CALL TO ACTION BUTTONS */}
             <div className="hidden sm:flex items-center gap-2.5" id="header-actions">
-              {/* AGENDAMIENTO TIPO C BUTTON (Direct link to https://agendamiento.tipocrioverde.com/) */}
-              <a
-                href="https://agendamiento.tipocrioverde.com/"
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* AGENDAMIENTO TIPO C BUTTON (Navega a la página de agendamiento) */}
+              <button
+                type="button"
+                onClick={() => {
+                  onNavigate('agendamiento');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className={`px-3.5 py-2 font-bold rounded-xl text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-sm ${
-                  isScrolled
+                  currentPage === 'agendamiento'
+                    ? 'bg-emerald-800 text-white ring-2 ring-emerald-400/50'
+                    : isScrolled
                     ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
                     : 'bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-400/40'
                 }`}
-                title="Ir al sistema de Agendamiento Tipo C Rioverde"
+                title="Ir a la página de Agendamiento Tipo C Rioverde"
                 id="header-btn-agendamiento"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>Agendamiento Tipo C</span>
-                <ExternalLink className="w-3 h-3 opacity-80" />
-              </a>
+              </button>
             </div>
 
             {/* MOBILE TRIGGER */}
@@ -224,17 +227,18 @@ export default function Header({ onOpenAppointment, currentPage, onNavigate }: H
 
               {/* Mobile CTA */}
               <div className="pt-6 border-t border-gray-100 space-y-3">
-                <a
-                  href="https://agendamiento.tipocrioverde.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-700/20"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onNavigate('agendamiento');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-700/20 cursor-pointer"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Agendamiento Tipo C</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+                </button>
 
                 <div className="flex justify-center text-[10px] text-gray-400 font-mono">
                   MSP ATENCIÓN GRATUITA EN ECUADOR

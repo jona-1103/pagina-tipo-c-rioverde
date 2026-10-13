@@ -5,11 +5,11 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Calendar, HeartPulse, Clock, ShieldCheck, MapPin, Stethoscope, ChevronRight } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { HERO_IMAGE } from '../data';
 
 interface HeroProps {
-  onOpenAppointment: () => void;
+  onOpenAppointment?: () => void;
 }
 
 export default function Hero({ onOpenAppointment }: HeroProps) {
@@ -72,7 +72,7 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
 
               {/* Description */}
               <p className="text-xs sm:text-sm md:text-base text-white/95 font-medium leading-relaxed drop-shadow-md max-w-xl">
-                Estamos listos para atenderte en el momento en que lo necesites. Cuidamos la salud de cada familia rioverdeña y de sus parroquias con médicos siempre disponibles y emergencias las 24 horas. Estamos aquí, muy cerca de ti.
+                Estamos listos para atenderte en el momento en que lo necesites. Cuidamos la salud de cada familia rioverdeña y de sus parroquias con médicos siempre disponibles y emergencias las 24 horas. <span className="whitespace-nowrap">Estamos aquí, muy cerca de ti.</span>
               </p>
 
               {/* Slogan highlight on single line below */}
@@ -80,26 +80,6 @@ export default function Hero({ onOpenAppointment }: HeroProps) {
                 ¡Tu bienestar y el de tu familia es nuestra prioridad!
               </p>
 
-              {/* Action buttons on the left */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <button
-                  type="button"
-                  onClick={onOpenAppointment}
-                  className="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-emerald-950 font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-emerald-950/40 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  id="hero-btn-citas"
-                >
-                  <Calendar className="w-4 h-4 text-emerald-950" />
-                  <span>Agendar Cita Médica</span>
-                </button>
-
-                <a
-                  href="#seccion-servicios"
-                  className="px-5 py-3.5 bg-white/15 hover:bg-white/25 active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl border border-white/25 backdrop-blur-md transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-                >
-                  <Stethoscope className="w-4 h-4 text-emerald-300" />
-                  <span>Ver Servicios Clínicos</span>
-                </a>
-              </div>
 
             </div>
           </div>

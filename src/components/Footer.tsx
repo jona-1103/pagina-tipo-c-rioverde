@@ -7,14 +7,14 @@ import React from 'react';
 import { HeartPulse, Facebook, X, Instagram, Phone, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => void;
+  onNavigate: (page: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'agendamiento' | 'contacto') => void;
   onOpenAppointment: () => void;
 }
 
 export default function Footer({ onNavigate, onOpenAppointment }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
-  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'contacto') => {
+  const handleLinkClick = (e: React.MouseEvent, pageId: 'inicio' | 'servicios' | 'nosotros' | 'protocolos' | 'agendamiento' | 'contacto') => {
     e.preventDefault();
     onNavigate(pageId);
     window.scrollTo({ top: 0, behavior: 'smooth' });

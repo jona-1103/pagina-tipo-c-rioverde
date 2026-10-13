@@ -8,12 +8,16 @@ import doctorResultsImg from './assets/images/lab_results_rioverde_1780685509630
 import heroBannerImg from './assets/images/banner-rioverde.png';
 import ecografiaDoctorImg from './assets/images/doctor_ecografia_rioverde_1791220643957.jpg';
 import fenomenoNinoImg from './assets/images/fenomeno_nino_prevencion_1791492406137.jpg';
+import agendamientoInternoImg from './assets/images/agendamiento_interno_1791915463601.jpg';
+import agendamientoEcografiaImg from './assets/images/agendamiento_ecografia_1791915465148.jpg';
 
 // Main health center banner image (Centro de Salud Rio Verde Tipo C)
 export const HERO_IMAGE = heroBannerImg;
 export const DOCTOR_RESULTS_IMAGE = doctorResultsImg;
 export const ECOGRAFIA_IMAGE = ecografiaDoctorImg;
 export const FENOMENO_NINO_IMAGE = fenomenoNinoImg;
+export const AGENDAMIENTO_INTERNO_IMAGE = agendamientoInternoImg;
+export const AGENDAMIENTO_ECOGRAFIA_IMAGE = agendamientoEcografiaImg;
 
 export const benefitsList: Benefit[] = [
   {
